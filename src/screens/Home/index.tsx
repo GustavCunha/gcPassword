@@ -1,16 +1,53 @@
-import React, { useState } from 'react'
-import { View, Text, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, FlatList, Alert } from 'react-native'
+import * as SecureStore from 'expo-secure-store';
+import { useIsFocused } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
 
 import { Button } from '../../components/Button';
 import { Card, CardProps } from '../../components/Card';
 import { Header } from '../../components/Header'
 
-import { passwords } from '../../utils/password';
+import { KEY_STORE } from '../../utils/constant';
 
 import { s } from './styles'
 
 export function Home() {
-    const [data, setData] = useState<CardProps[]>(passwords);
+    const isFocused = useIsFocused();
+    const [data, setData] = useState<CardProps[]>([]);
+
+    async function handleFetchData() {
+        try {
+            const response = await SecureStore.getItemAsync(KEY_STORE);
+            const data = response ? JSON.parse(response) : [];
+            setData(data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    async function handleRemove(id: String) {
+        const response = await SecureStore.getItemAsync(KEY_STORE);
+        const previousData = response ? JSON.parse(response) : []
+
+        const data = previousData.filter((item: CardProps) => item.id !== id)
+        await SecureStore.setItemAsync(KEY_STORE, JSON.stringify(data));
+        setData(data);
+    }
+
+    async function handleCopyToClipboard(id: String) {
+        const response = await SecureStore.getItemAsync(KEY_STORE);
+        const previousData = response ? JSON.parse(response) : []
+
+        const data = previousData.filter((item: CardProps) => item.id === id)
+        await Clipboard.setStringAsync(data[0].password)
+
+        Alert.alert('Sucesso', 'Copiado')
+    }
+
+    useEffect(() => {
+        handleFetchData()
+    }, [isFocused])
 
     return (
         <View style={s.container}>
@@ -22,7 +59,7 @@ export function Home() {
                 </Text>
 
                 <Text style={s.count}>
-                    {`${data.length} ao total`} 
+                    {`${data.length ?? '0'} ao total`} 
                 </Text>
             </View>
 
@@ -34,7 +71,8 @@ export function Home() {
                 renderItem={({ item }) =>
                     <Card
                         data={item}
-                        onPress={() => {}}
+                        onCopy={() => handleCopyToClipboard(item.id)}
+                        onRemove={() => handleRemove(item.id)}
                     />
                 }
             />

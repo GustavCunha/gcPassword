@@ -22,7 +22,6 @@ export const s = StyleSheet.create({
     },
     user: {
         flex: 1,
-        // marginLeft: 12
     },
     title: {
         color: theme.colors.white,

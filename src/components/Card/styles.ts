@@ -33,15 +33,9 @@ export const s = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
     },
-    share: {
+    option: {
         paddingHorizontal: 10,
         height: 80,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    delete: {
-        height: 80,
-        paddingHorizontal: 10,
         alignItems: 'center',
         justifyContent: 'center',
         borderLeftWidth: 1,

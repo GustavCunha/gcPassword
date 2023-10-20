@@ -23,7 +23,7 @@ export function Header() {
             </View>
 
             <TouchableOpacity style={s.button} onPress={handleAdd}>
-                <Feather name='plus' size={22} color='#FFFFFF'/>
+                <Feather name='plus' size={24} color='#FFFFFF'/>
             </TouchableOpacity>
         </View>
     )

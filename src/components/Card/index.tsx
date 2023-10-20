@@ -12,10 +12,11 @@ export type CardProps = {
 }
 type Props = {
     data: CardProps;
-    onPress: () => void;
+    onCopy: () => void;
+    onRemove: () => void;
 }
 
-export function Card({ data, onPress }: Props) {
+export function Card({ data, onCopy, onRemove }: Props) {
     const [passwordIsVisible, setPasswordIsVisible] = useState(false);
 
     function togglePasswordIsVisible() {
@@ -50,7 +51,7 @@ export function Card({ data, onPress }: Props) {
                 </View>
             </View>
 
-            <TouchableOpacity style={s.share} activeOpacity={0.7}>
+            <TouchableOpacity style={s.option} activeOpacity={0.7} onPress={onCopy}>
                 <Feather 
                     name='copy'
                     size={22}
@@ -59,11 +60,11 @@ export function Card({ data, onPress }: Props) {
             </TouchableOpacity>
 
             <TouchableOpacity
-                style={s.delete}
-                onPress={onPress}
+                style={s.option}
+                onPress={onRemove}
             >
                 <Feather
-                    name="delete"
+                    name="trash-2"
                     size={22}
                     color={theme.colors.red}
                 />

@@ -3,8 +3,8 @@ export const theme = {
         background: {
             light: '#F2F3F5'
         },
-        primary: '#51bbfe', 
-        secondary: '#f4e76e',
+        primary: '#2b303a', 
+        secondary: '#92dce5',
         gray: {
             100: '#5e5f4e',
             50: '#757761',

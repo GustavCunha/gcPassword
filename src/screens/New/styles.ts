@@ -14,13 +14,13 @@ export const s = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         padding: 24,
-        paddingTop: 40,
+        paddingTop: 50,
         marginBottom: 24,
         borderBottomColor: theme.colors.gray[50],
         borderBottomWidth: 1
     },
     title: {
-        fontSize: 20,
+        fontSize: 22,
         color: theme.colors.white,
         fontWeight: 'bold',
         flex: 1,
