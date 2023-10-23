@@ -1,20 +1,26 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, Alert } from 'react-native'
+import { FlatList, VStack, Text } from 'native-base';
+import { Alert } from 'react-native'
+import { useIsFocused, useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
-import { useIsFocused } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
 
-import { Button } from '../../components/Button';
-import { Card, CardProps } from '../../components/Card';
-import { Header } from '../../components/Header'
+import { Button } from '../components/Button';
+import { Card, CardProps } from '../components/Card';
+import { Header } from '../components/Header'
 
-import { KEY_STORE } from '../../utils/constant';
+import { KEY_STORE } from '../utils/constant';
 
-import { s } from './styles'
 
 export function Home() {
     const isFocused = useIsFocused();
+    const navigation = useNavigation();
+
     const [data, setData] = useState<CardProps[]>([]);
+
+    function handleAdd() {
+        navigation.navigate("New");
+    }
 
     async function handleFetchData() {
         try {
@@ -50,24 +56,24 @@ export function Home() {
     }, [isFocused])
 
     return (
-        <View style={s.container}>
+        <VStack flex={1} backgroundColor='light.100' alignItems='center'>
             <Header />
 
-            <View style={s.listHeader}>
-                <Text style={s.title}>
+            <VStack flexDirection='row' alignItems='center' justifyContent='space-between' w='full' px={6} mt={5}>
+                <Text fontSize='lg' fontWeight='bold' color='blueGray.800'>
                     Suas senhas
                 </Text>
 
-                <Text style={s.count}>
+                <Text fontSize='sm' color='blueGray.800'>
                     {`${data.length ?? '0'} ao total`} 
                 </Text>
-            </View>
+            </VStack>
 
             <FlatList
                 data={data}
                 keyExtractor={item => item.id}
-                style={s.list}
-                contentContainerStyle={s.listContent}
+                w='full'
+                contentContainerStyle={{padding: 24, paddingBottom: 100}}
                 renderItem={({ item }) =>
                     <Card
                         data={item}
@@ -77,9 +83,7 @@ export function Home() {
                 }
             />
 
-            <View style={s.footer}>
-                <Button title='Limpar lista' />
-            </View>
-        </View>
+            <Button title='Adicionar' mb={10} px={20} onPress={handleAdd}/>
+        </VStack>
     )
 }

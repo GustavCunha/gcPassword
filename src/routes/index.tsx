@@ -1,19 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { Home } from "../screens/Home";
-import { New } from "../screens/New";
-
-const {Navigator, Screen} = createNativeStackNavigator();
+import { SignIn } from '../screens/SignIn';
+import { Loading } from '../components/Loading';
+import { AppRoutes } from './app.routes';
 
 export function Routes() {
+    const [loading, setLoading] = useState(false)
+    const [user, setUser] = useState(false)
+
+    if (loading) return <Loading />
+
     return (
         <NavigationContainer>
-            <Navigator screenOptions={{headerShown: false}}>
-                <Screen name="Home" component={Home} />
-                <Screen name="New" component={New} />
-            </Navigator>
+            {user ? <AppRoutes/> : <SignIn />}
         </NavigationContainer>
     )
 }
