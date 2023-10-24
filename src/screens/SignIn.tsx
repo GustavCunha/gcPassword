@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Alert } from "react-native";
 import { Heading, Icon, Image, Pressable, Text, VStack } from "native-base";
 import {Feather} from '@expo/vector-icons';
-import * as LocalAuthentication from 'expo-local-authentication';
 
 import { Input } from "../components/Input";
 import { Button } from "../components/Button";
 
 import logo from '../images/padlock.png'
+import { useAuth } from "../hook/useAuth";
 
 export function SignIn() {
+    const {signIn} = useAuth();
+
     const [passwordIsVisible, setPasswordIsVisible] = useState(true);
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
@@ -18,23 +19,8 @@ export function SignIn() {
         setPasswordIsVisible(prevState => !prevState);
     }
 
-    async function handleAuthentication() {
-        const isBiometricEnrolled = await LocalAuthentication.isEnrolledAsync();
-
-        if (!isBiometricEnrolled) {
-            return Alert.alert('Login', 'Nenhuma biometria encontrada. Por favor, cadastre no dispositivo ')
-        }
-
-        const auth = await LocalAuthentication.authenticateAsync({
-            promptMessage: 'Login com Biometria',
-            fallbackLabel: 'Biometria não reconhecida'
-        })
-
-        console.log(auth)
-    }
-
     useEffect(() => {
-        handleAuthentication();
+        signIn()
     },[])
     
     return (
@@ -81,7 +67,7 @@ export function SignIn() {
             /> 
             
             {/* Button */}
-            <Button title="Entrar" mt={5} onPress={handleAuthentication}/>
+            <Button title="Entrar" mt={5} onPress={signIn}/>
         </VStack>
     )
 }

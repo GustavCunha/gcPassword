@@ -50,7 +50,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 </Heading>
 
                 {passwordIsVisible ?
-                    <Text color='blueGray.800' fontSize='sm' fontWeight='bold'>
+                    <Text color='blueGray.700' fontSize='sm' fontWeight='bold'>
                         {data.password}
                     </Text>
                     :

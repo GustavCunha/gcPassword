@@ -1,13 +1,13 @@
 import React from 'react'
 import { HStack, VStack, Text, IconButton, Icon } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
 import {Feather} from '@expo/vector-icons';
+import { useAuth } from '../hook/useAuth';
 
 export function Header() {
-    const navigation = useNavigation();
+    const {signOut} = useAuth();
 
-    function handleAdd() {
-        navigation.navigate("New");
+    function handleLogOut() {
+        signOut()
     }
 
     return (
@@ -17,11 +17,11 @@ export function Header() {
             alignItems='center'
             bg='blueGray.800'
             pt={20}
-            pb={16}
+            pb={12}
             px={6}
         >
             <VStack flex={1}>
-                <Text color='light.100' fontSize='lg' lineHeight='xl'>
+                <Text color='light.100' fontSize='2xl' lineHeight='xl'>
                     Olá, 😊
                 </Text>
                 <Text color='light.100' fontSize='sm'>
@@ -30,8 +30,8 @@ export function Header() {
             </VStack>
 
             <IconButton 
-                icon={<Icon as={Feather} name='plus' color='white' size='xl'/>}
-                onPress={handleAdd}
+                icon={<Icon as={Feather} name='log-out' color='white' size='2xl'/>}
+                onPress={handleLogOut}
             />
         </HStack>
     )

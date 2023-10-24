@@ -1,9 +1,14 @@
+import 'react-native-reanimated'
+import 'react-native-gesture-handler'
 import { StatusBar } from 'expo-status-bar';
-import { Routes } from './src/routes';
 import { useFonts, Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import { NativeBaseProvider } from 'native-base';
 
+import { AuthContextProvider } from './src/context/AuthContext';
+
+import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
+
 import { theme } from './src/styles/theme';
 
 export default function App() {
@@ -11,8 +16,10 @@ export default function App() {
 
     return (
         <NativeBaseProvider theme={theme}>
-            <StatusBar style="light" />
-            {fontsLoaded ? <Routes /> : <Loading />}
+            <AuthContextProvider>
+                <StatusBar style="auto" />
+                {fontsLoaded ? <Routes /> : <Loading />}
+            </AuthContextProvider>
         </NativeBaseProvider>
     );
 }

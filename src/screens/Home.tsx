@@ -10,12 +10,14 @@ import { Card, CardProps } from '../components/Card';
 import { Header } from '../components/Header'
 
 import { KEY_STORE } from '../utils/constant';
+import { Loading } from '../components/Loading';
 
 
 export function Home() {
     const isFocused = useIsFocused();
     const navigation = useNavigation();
 
+    const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState<CardProps[]>([]);
 
     function handleAdd() {
@@ -27,6 +29,7 @@ export function Home() {
             const response = await SecureStore.getItemAsync(KEY_STORE);
             const data = response ? JSON.parse(response) : [];
             setData(data)
+            setIsLoading(false)
         } catch (error) {
             console.log(error)
         }
@@ -58,7 +61,7 @@ export function Home() {
     return (
         <VStack flex={1} backgroundColor='light.100' alignItems='center'>
             <Header />
-
+            
             <VStack flexDirection='row' alignItems='center' justifyContent='space-between' w='full' px={6} mt={5}>
                 <Text fontSize='lg' fontWeight='bold' color='blueGray.800'>
                     Suas senhas
@@ -69,20 +72,21 @@ export function Home() {
                 </Text>
             </VStack>
 
-            <FlatList
-                data={data}
-                keyExtractor={item => item.id}
-                w='full'
-                contentContainerStyle={{padding: 24, paddingBottom: 100}}
-                renderItem={({ item }) =>
-                    <Card
-                        data={item}
-                        onCopy={() => handleCopyToClipboard(item.id)}
-                        onRemove={() => handleRemove(item.id)}
-                    />
-                }
-            />
-
+            {isLoading ? <Loading /> : 
+                <FlatList
+                    data={data}
+                    keyExtractor={item => item.id}
+                    w='full'                
+                    contentContainerStyle={{padding: 24, paddingBottom: 100}}
+                    renderItem={({ item }) =>
+                        <Card
+                            data={item}
+                            onCopy={() => handleCopyToClipboard(item.id)}
+                            onRemove={() => handleRemove(item.id)}
+                        />
+                    }
+                />
+            }
             <Button title='Adicionar' mb={10} px={20} onPress={handleAdd}/>
         </VStack>
     )
