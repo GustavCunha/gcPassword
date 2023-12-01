@@ -16,10 +16,12 @@ export function Input({label, ...rest}: Props) {
             </Text>
             
             <NativeBaseInput 
-                bg='white'
+                bg='muted.200'
                 h={12}
                 size="md"
-                borderWidth={0}
+                borderRadius='xl'
+                borderWidth={0.5}
+                autoCapitalize='none'
                 fontSize="md"
                 fontFamily="body"
                 color="blueGray.800"
@@ -27,7 +29,7 @@ export function Input({label, ...rest}: Props) {
                 _focus={{
                     borderWidth: 1,
                     borderColor: "blue.500",
-                    bg: "light.50"
+                    bg: "white"
                 }}
                 {...rest}
             />

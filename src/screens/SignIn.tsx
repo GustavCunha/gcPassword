@@ -1,22 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { Heading, Icon, Image, Pressable, Text, VStack } from "native-base";
-import {Feather} from '@expo/vector-icons';
+import { Heading, Image, Pressable, StatusBar, Text, VStack } from "native-base";
+import { Eye, EyeSlash } from "phosphor-react-native";
 
-import { Input } from "../components/Input";
-import { Button } from "../components/Button";
+import { Input } from "@components/Input";
+import { Button } from "@components/Button";
 
 import logo from '../images/padlock.png'
+
 import { useAuth } from "../hook/useAuth";
+
+import { theme } from "../styles/theme";
 
 export function SignIn() {
     const {signIn} = useAuth();
+    const {colors, size} = theme;
 
-    const [passwordIsVisible, setPasswordIsVisible] = useState(true);
+    const [isVisiblePassword, setIsVisiblePassword] = useState(true);
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
 
-    function togglePasswordIsVisible() {
-        setPasswordIsVisible(prevState => !prevState);
+    function togglePasswordVisibility() {
+        setIsVisiblePassword(prevState => !prevState);
     }
 
     useEffect(() => {
@@ -24,10 +28,14 @@ export function SignIn() {
     },[])
     
     return (
-        <VStack flex={1} p={10} bg='light.100'>
-            {/* Logo */}
+        <VStack flex={1} p={10} bg='white'>
+            <StatusBar 
+                barStyle='dark-content' 
+                backgroundColor='transparent' 
+                translucent
+            />
             <Image source={logo} alt='Logo' size={48} alignSelf='center' />
-            {/* Description */}
+            
             <VStack alignItems='center' my={6}>
                 <Heading 
                     color='blue.600' 
@@ -41,7 +49,9 @@ export function SignIn() {
                     fontSize='sm'
                     mb={5}
                 >
-                    {'Proteja suas senhas, simplifique sua vida digital e garanta a segurança dos seus dados com o nosso app de armazenamento de senhas'}
+                    Proteja suas senhas, simplifique sua vida digital e 
+                    garanta a segurança dos seus dados com o nosso app de 
+                    armazenamento de senhas
                 </Text>
             </VStack>
 
@@ -55,18 +65,19 @@ export function SignIn() {
             <Input 
                 mb={5}
                 label="Senha"
-                secureTextEntry={passwordIsVisible}
-                InputRightElement={
-                    <Pressable onPress={togglePasswordIsVisible}>
-                        <Icon as={Feather} name={passwordIsVisible ? 'eye' : 'eye-off'} color='gray.600' size='lg' mr={2} />
-                    </Pressable> 
-                }
+                secureTextEntry={isVisiblePassword}
                 value={password}
                 onChangeText={setPassword}
                 autoCapitalize="none"
+                InputRightElement={
+                    <Pressable onPress={togglePasswordVisibility} p={2} borderLeftWidth={0.5}>
+                        {isVisiblePassword ? <Eye color={colors.gray_600} size={size.XL} /> :
+                            <EyeSlash color={colors.gray_600} size={size.XL} />   
+                        }
+                    </Pressable> 
+                }
             /> 
             
-            {/* Button */}
             <Button title="Entrar" mt={5} onPress={signIn}/>
         </VStack>
     )

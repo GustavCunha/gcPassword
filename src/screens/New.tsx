@@ -1,50 +1,37 @@
 import React, { useState } from 'react'
 import { Alert } from 'react-native'
-import { useNavigation } from '@react-navigation/native';
-import {Feather} from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
-import * as SecureStore from 'expo-secure-store';
-import { HStack, Heading, Icon, IconButton, ScrollView, Text, VStack} from 'native-base'
+import { useNavigation } from '@react-navigation/native';
+import { HStack, Heading, Button as Btn, Pressable, ScrollView, VStack, useToast} from 'native-base'
+import { CaretLeft, Eye, EyeSlash } from 'phosphor-react-native';
 
-import { Button } from '../components/Button'
-import { Input } from '../components/Input'
+import { Button } from '@components/Button'
+import { Input } from '@components/Input'
 
-import { KEY_STORE } from '../utils/constant';
+import { passwordAdd } from '@storage/password/passwordAdd';
+
+import { theme } from '../styles/theme';
 
 export function New() {
-    const navigation = useNavigation();
+    const {navigate} = useNavigation();
+    const {colors, size} = theme;
 
-    const [name, setName] = useState('');
+    const [service, setService] = useState('');
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
+    const [isVisiblePassword, setIsVisiblePassword] = useState(true);
 
     async function handleNew() {
         try {
-            const id = uuid.v4();
-    
-            const newData = {
-                id,
-                name,
-                user,
-                password
-            }
-
-            const response = await SecureStore.getItemAsync(KEY_STORE)
-            const previousData = response ? JSON.parse(response) : []
-
-            const data = [...previousData, newData]
-
-            if (name.trim() === '' || user.trim() === '' || password.trim() === '') {
-                Alert.alert('Ops', 'Preencha todos os campos')
-                return
+            if (service.trim() === '' || user.trim() === '' || password.trim() === '') {
+                return Alert.alert('Cadastro', 'Preencha todos os campos')
             } 
 
-            if (name.length < 3) {
-                Alert.alert('Ops', 'Campo Nome precisa de no mínimo 3 letras')
-                return
-            }
+            const id = String(uuid.v4());
+    
+            const newPass = {id, service, user, password}
 
-            await SecureStore.setItemAsync(KEY_STORE, JSON.stringify(data));
+            await passwordAdd(newPass);
             Alert.alert('Sucesso', 'Senha cadastrada com sucesso!')
             resetFields()
         } catch (error) {
@@ -54,29 +41,31 @@ export function New() {
     }
 
     function handleGoBack() {
-        navigation.goBack();
+        navigate('Home');
     }
 
     function resetFields(){
-        setName('')
+        setService('')
         setUser('')
         setPassword('')
     }
 
+    function togglePasswordVisibility() {
+        setIsVisiblePassword(prevState => !prevState);
+    }
+
     return (
-        <VStack>   
+        <VStack flex={1} bg='blueGray.800'>   
             <HStack 
-                w='full' 
-                bg='blueGray.800' 
-                p={6}
+                w='full'  
+                px={6}
                 pt={12} 
                 justifyContent='space-between' 
                 alignItems='center'
             >
-                <IconButton 
-                    icon={<Icon as={Feather} name='chevron-left' color='white' size='xl'/>}
-                    onPress={handleGoBack}
-                />
+                <Pressable onPress={handleGoBack} p={2} ml={-2}>
+                    <CaretLeft color={colors.white} size={28} />
+                </Pressable>
 
                 <Heading 
                     color='light.100' 
@@ -90,37 +79,54 @@ export function New() {
                 </Heading>
             </HStack>
 
-            <ScrollView w='full' px={10} mt={6}>
+            <VStack flex={1} bg='white' w='full' p={6} mt={6}>
                 <Input 
                     label='Nome do Serviço'
                     placeholder='Ex.: Google'
                     mb={5}
                     autoFocus
-                    value={name} 
-                    onChangeText={setName}
+                    value={service} 
+                    onChangeText={setService}
                 />
                 <Input 
                     label='E-mail ou usuário'
                     placeholder='Ex.: user.teste'
                     mb={5}
-                    autoCapitalize="none" 
                     value={user}
                     onChangeText={setUser}
                 />
                 <Input 
                     label='Senha'
+                    placeholder='Digite uma senha'
                     mb={5}
-                    secureTextEntry
+                    secureTextEntry={isVisiblePassword}
                     value={password}
                     onChangeText={setPassword} 
+                    InputRightElement={
+                        <Pressable onPress={togglePasswordVisibility} p={2} borderLeftWidth={0.5}>
+                            {isVisiblePassword ? <Eye color={colors.gray_600} size={size.XL} /> :
+                                <EyeSlash color={colors.gray_600} size={size.XL} />   
+                            }
+                        </Pressable> 
+                    }
                 />
+
+                {/* <Progress 
+                    value={password.length} 
+                    max={20} 
+                    size='xs' 
+                    colorScheme='blue.500'
+                    _filledTrack={{
+                        bg: 'blue.500'
+                    }} 
+                /> */}
 
                 <Button
                     title='Salvar'
                     onPress={handleNew}
                     mt={5}
                 />
-            </ScrollView>
+            </VStack>
         </VStack>
     )
 }

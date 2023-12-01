@@ -1,5 +1,5 @@
-import {Button as NativeBaseButton, IButtonProps, Heading } from 'native-base';
 import React from 'react';
+import {Button as NativeBaseButton, IButtonProps, Heading } from 'native-base';
 
 type Props = IButtonProps & {
     title: string;
@@ -10,7 +10,8 @@ export function Button({ title, ...rest }: Props) {
         <NativeBaseButton
             bg='blue.600'
             h={12}
-            rounded='sm'
+            rounded='2xl'
+            shadow='4'
             _pressed={{
                 bg: 'blue.500'
             }}

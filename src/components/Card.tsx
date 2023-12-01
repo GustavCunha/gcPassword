@@ -1,32 +1,29 @@
 import React, { useState } from 'react'
-import {Feather} from '@expo/vector-icons';
-import { Heading, HStack, Icon, Pressable, Text, VStack } from 'native-base';
+import { Heading, HStack, Pressable, Text, VStack } from 'native-base';
+import { Copy, Eye, EyeClosed, Trash } from 'phosphor-react-native';
+import { theme } from '../styles/theme';
+import { PassDTO } from '@storage/DTO/Pass';
 
-export type CardProps = {
-    id: string;
-    name: string;
-    user: string;
-    password: string;
-}
 type Props = {
-    data: CardProps;
+    data: PassDTO;
     onCopy: () => void;
     onRemove: () => void;
 }
 
 export function Card({ data, onCopy, onRemove }: Props) {
-    const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+    const {colors, size} = theme;
+    const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
-    function togglePasswordIsVisible() {
-        setPasswordIsVisible(prevState => !prevState);
+    function togglePasswordVisibility() {
+        setIsVisiblePassword(prevState => !prevState);
     }
 
     return (
         <HStack
             bg='white'
-            borderColor='blueGray.500'
-            borderWidth={1}
-            borderRadius='sm'
+            borderColor='blueGray_500'
+            borderWidth={0.5}
+            borderRadius='2xl'
             alignItems='center'
             justifyContent='center'
             w='full'
@@ -34,22 +31,24 @@ export function Card({ data, onCopy, onRemove }: Props) {
             mb={5}
         >
             <Pressable 
-                onPress={togglePasswordIsVisible} 
                 px={2} 
                 h={12}
                 justifyContent='center'
+                onPress={togglePasswordVisibility} 
                 borderRightWidth={1}
                 borderRightColor='blueGray.500'
             >
-                <Icon as={Feather} name={passwordIsVisible ? 'eye-off' : 'eye'} color='gray.600' size='lg'/>
+                {isVisiblePassword ? <EyeClosed color={colors.gray_600} size={size.XL} /> :
+                    <Eye color={colors.gray_600} size={size.XL} />   
+                }
             </Pressable>
 
             <VStack flex={1} ml={2} alignItems='center'>
-                <Heading fontSize='15' lineHeight='18' color='blueGray.500' fontWeight='bold'>
-                    {data.name}
+                <Heading fontSize='lg' color='blueGray.500' fontFamily='heading'>
+                    {data.service}
                 </Heading>
 
-                {passwordIsVisible ?
+                {isVisiblePassword ?
                     <Text color='blueGray.700' fontSize='sm' fontWeight='bold'>
                         {data.password}
                     </Text>
@@ -62,24 +61,24 @@ export function Card({ data, onCopy, onRemove }: Props) {
             
             <Pressable 
                 px={2}
-                onPress={onCopy}
-                justifyContent='center'
                 h={12}
+                justifyContent='center'
+                onPress={onCopy}
                 borderLeftWidth={1}
                 borderLeftColor='blueGray.500'
             >
-                <Icon as={Feather} name='copy' color='blue.600' size='lg'/>
+                <Copy color={colors.blue_600} size={size.XL} />
             </Pressable>
 
             <Pressable
                 px={2}
-                justifyContent='center'
                 h={12}
+                justifyContent='center'
+                onPress={onRemove}
                 borderLeftWidth={1}
                 borderLeftColor='blueGray.500'
-                onPress={onRemove}
             >
-                <Icon as={Feather} name='trash-2' color='red.600' size='lg'/>
+                <Trash color={colors.red_600} size={size.XL} />
             </Pressable>
         </HStack>
     )

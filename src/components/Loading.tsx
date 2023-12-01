@@ -1,10 +1,14 @@
 import { Center, Heading, Spinner, Text } from 'native-base';
 
-export function Loading() {
+type Props = {
+    fontsLoaded?: boolean;
+}
+
+export function Loading({fontsLoaded = true}: Props) {
     return (
-        <Center flex={1} bg='light.100'>
+        <Center flex={1}>
             <Spinner color='blue.600' size='lg'/>
-            <Heading paddingTop={5} color='blue.600' fontSize='lg'>Aguarde um pouco</Heading>
+            {fontsLoaded && <Text pt={5} color='blue.600' fontFamily='heading'>Aguarde um pouco</Text>}
         </Center>
     )
 }
