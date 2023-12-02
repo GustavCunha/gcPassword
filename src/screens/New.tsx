@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
-import { Alert } from 'react-native'
-import uuid from 'react-native-uuid';
 import { useNavigation } from '@react-navigation/native';
-import { HStack, Heading, Button as Btn, Pressable, ScrollView, VStack, useToast} from 'native-base'
+import { HStack, Heading, Pressable, VStack } from 'native-base';
 import { CaretLeft, Eye, EyeSlash } from 'phosphor-react-native';
+import React, { useState } from 'react';
+import { Alert } from 'react-native';
+import uuid from 'react-native-uuid';
 
-import { Button } from '@components/Button'
-import { Input } from '@components/Input'
+import { Button } from '@components/Button';
+import { Input } from '@components/Input';
 
 import { passwordAdd } from '@storage/password/passwordAdd';
 

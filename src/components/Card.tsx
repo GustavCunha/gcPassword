@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import { PassDTO } from '@storage/DTO/Pass';
 import { Heading, HStack, Pressable, Text, VStack } from 'native-base';
 import { Copy, Eye, EyeClosed, Trash } from 'phosphor-react-native';
+import React, { useState } from 'react';
 import { theme } from '../styles/theme';
-import { PassDTO } from '@storage/DTO/Pass';
 
 type Props = {
     data: PassDTO;
@@ -35,7 +35,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 h={12}
                 justifyContent='center'
                 onPress={togglePasswordVisibility} 
-                borderRightWidth={1}
+                borderRightWidth={0.5}
                 borderRightColor='blueGray.500'
             >
                 {isVisiblePassword ? <EyeClosed color={colors.gray_600} size={size.XL} /> :
@@ -43,17 +43,17 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 }
             </Pressable>
 
-            <VStack flex={1} ml={2} alignItems='center'>
-                <Heading fontSize='lg' color='blueGray.500' fontFamily='heading'>
+            <VStack flex={1} alignItems='center'>
+                <Heading fontSize='lg' color='blueGray.500' fontFamily='heading' mb={1}>
                     {data.service}
                 </Heading>
 
                 {isVisiblePassword ?
-                    <Text color='blueGray.700' fontSize='sm' fontWeight='bold'>
+                    <Text color='blueGray.700' fontSize='sm' fontFamily='mono'>
                         {data.password}
                     </Text>
                     :
-                    <Text color='gray.600' fontSize='sm'>
+                    <Text color='gray.600' fontSize='sm' fontFamily='body'>
                         {data.user}
                     </Text>
                 }
@@ -64,7 +64,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 h={12}
                 justifyContent='center'
                 onPress={onCopy}
-                borderLeftWidth={1}
+                borderLeftWidth={.5}
                 borderLeftColor='blueGray.500'
             >
                 <Copy color={colors.blue_600} size={size.XL} />
@@ -75,7 +75,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 h={12}
                 justifyContent='center'
                 onPress={onRemove}
-                borderLeftWidth={1}
+                borderLeftWidth={.5}
                 borderLeftColor='blueGray.500'
             >
                 <Trash color={colors.red_600} size={size.XL} />

@@ -1,4 +1,4 @@
-import { Input as NativeBaseInput, IInputProps, Text } from 'native-base';
+import { IInputProps, Input as NativeBaseInput, Text } from 'native-base';
 
 type Props = IInputProps & {
     label: String;
@@ -11,6 +11,7 @@ export function Input({label, ...rest}: Props) {
                 color='blueGray.800' 
                 mb={2}  
                 fontSize='md'
+                fontFamily='mono'
             >
                 {label}
             </Text>
@@ -18,18 +19,18 @@ export function Input({label, ...rest}: Props) {
             <NativeBaseInput 
                 bg='muted.200'
                 h={12}
-                size="md"
+                size='md'
                 borderRadius='xl'
                 borderWidth={0.5}
                 autoCapitalize='none'
-                fontSize="md"
-                fontFamily="body"
-                color="blueGray.800"
-                placeholderTextColor="blueGray.500"
+                fontSize='md'
+                fontFamily='body'
+                color='blueGray.800'
+                placeholderTextColor='blueGray.500'
                 _focus={{
                     borderWidth: 1,
-                    borderColor: "blue.500",
-                    bg: "white"
+                    borderColor: 'blue.500',
+                    bg: 'white'
                 }}
                 {...rest}
             />

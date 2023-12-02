@@ -1,6 +1,6 @@
-import { ReactNode, createContext, useState } from "react";
 import * as LocalAuthentication from 'expo-local-authentication';
-import { Alert } from "react-native";
+import { ReactNode, createContext, useState } from 'react';
+import { Alert } from 'react-native';
 
 interface AuthProviderProps {
     children: ReactNode;

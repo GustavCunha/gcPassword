@@ -1,6 +1,6 @@
-import * as SecureStore from 'expo-secure-store';
-import { PassDTO } from '@storage/DTO/pass';
+import { PassDTO } from '@storage/DTO/Pass';
 import { PASSWORD_COLLECTION } from '@storage/storageConfig';
+import * as SecureStore from 'expo-secure-store';
 
 export async function passwordsGetAll() {
     try {

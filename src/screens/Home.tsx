@@ -1,24 +1,25 @@
-import React, { useCallback, useState } from 'react'
-import { FlatList, VStack, Text, HStack, Pressable } from 'native-base';
-import { Alert } from 'react-native'
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { SignOut } from 'phosphor-react-native';
 import * as Clipboard from 'expo-clipboard';
+import { FlatList, HStack, Pressable, Text, VStack, useToast } from 'native-base';
+import { SignOut } from 'phosphor-react-native';
+import React, { useCallback, useState } from 'react';
+import { Alert } from 'react-native';
 
 import { Button } from '@components/Button';
 import { Card } from '@components/Card';
-import { ListEmpty } from '@components/ListEmpty'
+import { ListEmpty } from '@components/ListEmpty';
 import { Loading } from '@components/Loading';
 
 import { useAuth } from '../hook/useAuth';
 
-import { passwordsGetAll } from '@storage/password/passwordsGetAll';
 import { PassDTO } from '@storage/DTO/Pass';
 import { passwordRemoveById } from '@storage/password/passwordRemoveById';
+import { passwordsGetAll } from '@storage/password/passwordsGetAll';
 
 
 export function Home() {
     const navigation = useNavigation();
+    const toast = useToast();
     const {signOut} = useAuth();
 
     const [isLoading, setIsLoading] = useState(true)
@@ -65,14 +66,18 @@ export function Home() {
         )
     }
 
-    async function handleCopyToClipboard(id: String) {
+    async function handleCopyToClipboard(pass: PassDTO) {
         try {
-            const pass = await passwordsGetAll();
+            const passwords = await passwordsGetAll();
     
-            const data = pass.filter(item => item.id === id);
+            const data = passwords.filter(item => item.id === pass.id);
             await Clipboard.setStringAsync(data[0].password);
-    
-            Alert.alert('Sucesso', 'Copiado')
+            
+            const {id} = pass;
+            if(!toast.isActive(id)) {
+                toast.show({id, description:`Senha do ${pass.service} copiada`});
+            }
+                
         } catch (error) {
             console.log(error);
             Alert.alert('Erro', 'Não foi possível copiar a senha.')
@@ -93,12 +98,13 @@ export function Home() {
                 w='full' 
                 justifyContent='space-between' 
                 alignItems='center'
-                py={12}
                 px={6}
+                pt={16}
+                pb={6}
                 borderBottomWidth={1}
             >
                 <VStack>
-                    <Text color='light.100' fontSize='2xl' lineHeight='xl' fontFamily='heading'>
+                    <Text color='light.100' fontSize='2xl' fontFamily='heading'>
                         Olá! 😊
                     </Text>
                     <Text color='light.100' fontSize='sm' fontFamily='body' fontStyle='italic'>
@@ -129,7 +135,7 @@ export function Home() {
                         renderItem={({ item }) =>
                             <Card
                                 data={item}
-                                onCopy={() => handleCopyToClipboard(item.id)}
+                                onCopy={() => handleCopyToClipboard(item)}
                                 onRemove={() => handleRemovePass(item.id)}
                             />
                         }

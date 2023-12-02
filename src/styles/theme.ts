@@ -1,4 +1,4 @@
-import { extendTheme } from "native-base";
+import { extendTheme } from 'native-base';
 
 export const theme = extendTheme({
     colors: {
@@ -15,8 +15,9 @@ export const theme = extendTheme({
 
     },
     fonts: {
-        heading: 'Inter_700Bold',
-        body: 'Inter_400Regular'
+        heading: 'Poppins_600SemiBold',
+        mono: 'Poppins_500Medium',
+        body: 'Poppins_400Regular'
     },
     size: {
         SM: 14,
