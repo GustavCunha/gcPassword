@@ -56,35 +56,11 @@ export function New() {
 
     return (
         <VStack flex={1} bg='blueGray.800'>   
-            <HStack 
-                w='full'  
-                px={6}
-                pt={12} 
-                justifyContent='space-between' 
-                alignItems='center'
-            >
-                <Pressable onPress={handleGoBack} p={2} ml={-2}>
-                    <CaretLeft color={colors.white} size={28} />
-                </Pressable>
-
-                <Heading 
-                    color='light.100' 
-                    fontSize='2xl' 
-                    fontWeight='bold'
-                    textAlign='center'
-                    flex={1}
-                    ml={-6}
-                >
-                    Cadastro
-                </Heading>
-            </HStack>
-
-            <VStack flex={1} bg='white' w='full' p={6} mt={6}>
+            <VStack flex={1} bg='white' w='full' p={6} mt={2}>
                 <Input 
                     label='Nome do Serviço'
                     placeholder='Ex.: Google'
                     mb={5}
-                    autoFocus
                     value={service} 
                     onChangeText={setService}
                 />
