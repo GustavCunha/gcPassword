@@ -1,4 +1,4 @@
-import { Heading, Image, Modal, Pressable, StatusBar, Text, VStack } from "native-base";
+import { Heading, Image, Modal, Pressable, StatusBar, Text, VStack, useToast } from "native-base";
 import { Eye, EyeSlash, Fingerprint } from "phosphor-react-native";
 import React, { useState } from "react";
 import { Alert } from "react-native";
@@ -16,6 +16,7 @@ import { theme } from "../styles/theme";
 
 export function SignIn() {
     const {signInBiometric, signInPass} = useAuth();
+    const toast = useToast();
     const {colors, size} = theme;
 
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
@@ -37,7 +38,12 @@ export function SignIn() {
     }
 
     async function login() {
-        if (password.trim() === '') return Alert.alert('Login', 'Informe a senha!');
+        if (password.trim() === '') 
+            return toast.show({
+                title: '⚠ Informe a senha!', 
+                placement: 'top',
+                style: {backgroundColor: colors.error[400]}
+            })
         try {
             await signInPass(password)
         } catch (error) {
@@ -47,10 +53,21 @@ export function SignIn() {
 
     async function savePass() {
         try {
-            if (createdPass.trim() === '' || name.trim() === '') return Alert.alert('Cadastro', 'Preencha o nome e a senha!')
+            if (createdPass.trim() === '' || name.trim() === '') {
+                return toast.show({
+                    title: 'Preencha o nome e a senha!', 
+                    placement: 'top',
+                    style: {backgroundColor: colors.error[400]}
+                })
+            }
 
             await createdLogin(name, createdPass)
-            console.log('Sucesso!')
+            toast.show({
+                title: 'Salvo com sucesso!', 
+                placement: 'bottom',
+                duration: 1000,
+                style: {backgroundColor: colors.success[400]}
+            })
             setShowModal(false);
         } catch (error) {
             console.log(error);
@@ -89,13 +106,15 @@ export function SignIn() {
                 <VStack my={5}> 
                     <Input
                         label="Senha"
+                        placeholder="***"
                         secureTextEntry={isVisiblePassword}
                         value={password}
                         onChangeText={setPassword}
+                        onSubmitEditing={login}
                         InputRightElement={
-                            <Pressable onPress={togglePasswordVisibility} p={2} borderLeftWidth={0.5}>
-                                {isVisiblePassword ? <Eye color={colors.gray_600} size={size.XL} /> :
-                                    <EyeSlash color={colors.gray_600} size={size.XL} />   
+                            <Pressable onPress={togglePasswordVisibility} px={2} borderLeftWidth={0.5}>
+                                {isVisiblePassword ? <Eye color={colors.gray_600} size='24' /> :
+                                    <EyeSlash color={colors.gray_600} size='24' />   
                                 }
                             </Pressable> 
                         }
@@ -124,7 +143,7 @@ export function SignIn() {
             <Modal isOpen={showModal} onClose={()=> setShowModal(false)}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Cadastre de Acesso</Modal.Header>
+                    <Modal.Header>Cadastro de Acesso</Modal.Header>
                     <Modal.Body>
                         <Input 
                             label='Nome'
@@ -135,6 +154,7 @@ export function SignIn() {
                         />
                         <Input 
                             label='Senha'
+                            placeholder="***"
                             secureTextEntry={isVisiblePassword}
                             value={createdPass}
                             onChangeText={setCreatedPass}

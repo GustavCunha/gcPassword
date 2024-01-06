@@ -16,14 +16,15 @@ export function Input({label, ...rest}: Props) {
                 {label}
             </Text>
             
-            <NativeBaseInput 
-                bg='muted.200'
-                h={12}
+            <NativeBaseInput
+                justifyContent='center'
+                bg='muted.100'
+                lineHeight='md'
                 size='md'
+                fontSize='md'
                 borderRadius='xl'
                 borderWidth={0.5}
                 autoCapitalize='none'
-                fontSize='md'
                 fontFamily='body'
                 color='blueGray.800'
                 placeholderTextColor='blueGray.500'

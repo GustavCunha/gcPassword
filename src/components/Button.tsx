@@ -15,6 +15,9 @@ export function Button({ title, ...rest }: Props) {
             _pressed={{
                 bg: 'blue.500'
             }}
+            _spinner={{
+                size: 'lg'
+            }}
             {...rest}
         >
             <Text color='white' fontFamily='heading' fontSize='md'>

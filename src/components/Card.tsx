@@ -1,7 +1,10 @@
-import { PassDTO } from '@storage/DTO/Pass';
-import { Heading, HStack, Pressable, Text, VStack } from 'native-base';
-import { Copy, Eye, EyeClosed, Trash } from 'phosphor-react-native';
 import React, { useState } from 'react';
+import { Heading, HStack, Icon, Pressable, Text, VStack } from 'native-base';
+import { Copy, Eye, EyeClosed, Trash } from 'phosphor-react-native';
+import {Feather} from '@expo/vector-icons'
+
+import { PassDTO } from '@storage/DTO/Pass';
+
 import { theme } from '../styles/theme';
 
 type Props = {
@@ -21,7 +24,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
     return (
         <HStack
             bg='white'
-            borderColor='blueGray_500'
+            borderColor='blueGray.400'
             borderWidth={0.5}
             borderRadius='2xl'
             alignItems='center'
@@ -29,6 +32,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
             w='full'
             h={20}
             mb={5}
+            shadow={4}
         >
             <Pressable 
                 px={2} 
@@ -38,18 +42,30 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderRightWidth={0.5}
                 borderRightColor='blueGray.500'
             >
-                {isVisiblePassword ? <EyeClosed color={colors.gray_600} size={size.XL} /> :
+                {isVisiblePassword ? <EyeClosed color={colors.blueGray_500} size={size.XL} /> :
                     <Eye color={colors.gray_600} size={size.XL} />   
                 }
             </Pressable>
 
-            <VStack flex={1} alignItems='center'>
-                <Heading fontSize='lg' color='blueGray.500' fontFamily='heading' mb={1}>
-                    {data.service}
-                </Heading>
+            <VStack flex={1} px={2}>
+                <HStack alignItems='center' mb={1}>
+                    <Icon 
+                        as={Feather} 
+                        name={data.category.icon } 
+                        size='md' 
+                        color='blueGray.700'
+                        mr={1}
+                    />
+                    <Heading 
+                        fontSize='lg' 
+                        color='blueGray.700'  
+                    >
+                        {data.service}
+                    </Heading>
+                </HStack>
 
                 {isVisiblePassword ?
-                    <Text color='blueGray.700' fontSize='sm' fontFamily='mono'>
+                    <Text color={colors.blueGray_500} fontSize='sm' fontFamily='mono'>
                         {data.password}
                     </Text>
                     :

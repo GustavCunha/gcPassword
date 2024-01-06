@@ -29,7 +29,7 @@ export function AuthContextProvider({children}: AuthProviderProps) {
         }
 
         const auth = await LocalAuthentication.authenticateAsync({
-            promptMessage: 'Login com Biometria',
+            promptMessage: 'Acesse com Biometria',
             fallbackLabel: 'Biometria não reconhecida'
         })
 

@@ -10,7 +10,7 @@ export function ListEmpty({message}: Props) {
     const {colors} = theme;
 
     return (
-        <VStack flex={1} alignItems='center' justifyContent='center'>
+        <VStack flex={1} alignItems='center' justifyContent='center' borderTopColor='black' borderTopWidth={0.5}>
             <Password color={colors.blueGray_700} size={34}/>
             <Text 
                 color='blueGray.800' 

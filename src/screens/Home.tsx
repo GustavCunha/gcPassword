@@ -117,7 +117,7 @@ export function Home() {
                 </Pressable>
             </HStack>
             
-            <VStack flex={1} bg='white' w='full' p={6}>
+            <VStack flex={1} bg='white' w='full' px={6} pt={6}>
                 <HStack alignItems='center' justifyContent='space-between' mb={3}>
                     <Text fontSize='lg' fontFamily='heading' color='blueGray.800'>
                         Suas senhas
@@ -140,6 +140,7 @@ export function Home() {
                             />
                         }
                         contentContainerStyle={data.length === 0 && {flex: 1}}
+                        showsVerticalScrollIndicator={false}
                         ListEmptyComponent={() => (
                             <ListEmpty message={`Nenhuma senha armazenada\nQue tal adicionar a primeira?`}/>
                         )}
@@ -147,7 +148,7 @@ export function Home() {
                 }
                 <Button 
                     title='Adicionar' 
-                    mb={5}
+                    m={5}
                     onPress={handleAdd}
                 />
             </VStack>
