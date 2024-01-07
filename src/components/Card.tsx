@@ -5,6 +5,8 @@ import {Feather} from '@expo/vector-icons'
 
 import { PassDTO } from '@storage/DTO/Pass';
 
+import { iconChoice } from '@utils/iconChoice';
+
 import { theme } from '../styles/theme';
 
 type Props = {
@@ -51,7 +53,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 <HStack alignItems='center' mb={1}>
                     <Icon 
                         as={Feather} 
-                        name={data.category.icon } 
+                        name={iconChoice(data.category)} 
                         size='md' 
                         color='blueGray.700'
                         mr={1}

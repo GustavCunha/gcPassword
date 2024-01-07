@@ -1,17 +1,17 @@
 import { VStack, Icon, Text, Button, IButtonProps } from "native-base";
 import {Feather} from '@expo/vector-icons'
-import { CategoryDTO } from "@storage/DTO/Category";
+import { iconChoice } from "@utils/iconChoice";
 
 type Props = IButtonProps & {
-    category: CategoryDTO;
+    category: string;
     isActive?: boolean
 }
 
-export function CategoryCard({category, isActive = true, ...rest}: Props) {
+export function CategoryCard({category, isActive = false, ...rest}: Props) {
     return (
         <Button
             variant='unstyled'
-            p={2}
+            py={2}
             mr={2}
             bgColor={isActive ? 'blue.600' : 'muted.100'}
             rounded='lg'
@@ -21,7 +21,7 @@ export function CategoryCard({category, isActive = true, ...rest}: Props) {
             <VStack alignItems='center' justifyContent='center'>
                 <Icon 
                     as={Feather} 
-                    name={category.icon} 
+                    name={iconChoice(category)} 
                     size='lg' 
                     color={isActive ? 'white' : 'blueGray.500'} 
                     mb={2}
@@ -29,12 +29,12 @@ export function CategoryCard({category, isActive = true, ...rest}: Props) {
 
                 <Text 
                     fontSize='sm' 
-                    fontFamily='mono'
+                    fontFamily={isActive ? 'heading' : 'mono'}
                     color={isActive ? 'white' : 'blueGray.500'}
                     textAlign='center'
                     adjustsFontSizeToFit
                 >
-                    {category.title}
+                    {category}
                 </Text>
             </VStack>
         </Button>

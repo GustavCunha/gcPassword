@@ -1,11 +1,10 @@
-export function getColorScheme(forcePass: string) {
-    if (forcePass === "Forte") {
-        return "emerald"; 
-      } else if (forcePass === "Boa") {
-        return "yellow";
-      } else if (forcePass === "Média") {
-        return "warning";
-      } else {
-        return "red";
-      }
+export function getColorScheme(forcePass: string): string {
+    const forceToColorMap: { [key: string]: string } = {
+        "Forte": "emerald",
+        "Boa": "yellow",
+        "Média": "warning",
+    };
+    
+    // Retorna a cor correspondente ou "red" se não houver correspondência
+    return forceToColorMap[forcePass] || "red";
 }

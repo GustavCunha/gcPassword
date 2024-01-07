@@ -1,7 +1,7 @@
-import { Pressable, Progress, ScrollView, Text, VStack, useToast } from 'native-base';
-import { Eye, EyeSlash } from 'phosphor-react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
+import { Box, Pressable, Progress, ScrollView, Text, VStack, useToast } from 'native-base';
+import { Eye, EyeSlash } from 'phosphor-react-native';
 import uuid from 'react-native-uuid';
 
 import { Button } from '@components/Button';
@@ -9,13 +9,13 @@ import { Input } from '@components/Input';
 import { CategoryCard } from '@components/CategoryCard';
 
 import { passwordAdd } from '@storage/password/passwordAdd';
-import { CategoryDTO } from '@storage/DTO/Category';
 
 import { categories } from '@utils/categories';
-
-import { theme } from '../styles/theme';
 import { assessPassStrength } from '@utils/assessPasswordStrength';
 import { getColorScheme } from '@utils/getColorScheme';
+import { calculatePasswordPercentage } from '@utils/calculatePasswordPercentage';
+
+import { theme } from '../styles/theme';
 
 export function New() {
     const {colors, size} = theme;
@@ -23,11 +23,12 @@ export function New() {
 
     const [isLoading, setIsLoading] = useState(false);
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
+    const [passStrength, setPassStrength] = useState('');
 
     const [service, setService] = useState('');
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
-    const [categorySelected, setCategorySelected] = useState<CategoryDTO | null>(null)
+    const [categorySelected, setCategorySelected] = useState('')
 
     async function handleNew() {
         try {
@@ -47,12 +48,7 @@ export function New() {
 
             const id = String(uuid.v4());
 
-            const category: CategoryDTO = {
-                title: categorySelected?.title!,
-                icon: categorySelected?.icon!
-            }
-
-            const newPass = {id, service, user, password, category}
+            const newPass = {id, service, user, password, category: categorySelected}
 
             await passwordAdd(newPass);
             toast.show({
@@ -79,12 +75,16 @@ export function New() {
         setService('')
         setUser('')
         setPassword('')
-        setCategorySelected(null)
+        setCategorySelected('')
     }
 
     function togglePasswordVisibility() {
         setIsVisiblePassword(prevState => !prevState);
     }
+
+    useEffect(() => {
+        setPassStrength(assessPassStrength(password));
+    }, [password])
 
     return (
         <VStack flex={1} bg='blueGray.800'>   
@@ -98,21 +98,21 @@ export function New() {
                     Categoria
                 </Text>
 
-                <VStack mb={5}>
+                <Box mb={5}>
                     <ScrollView 
                         horizontal 
                         showsHorizontalScrollIndicator={false} 
                     >
                         {categories.map(item => 
                             <CategoryCard 
-                                key={item.title} 
+                                key={item} 
                                 category={item}
                                 onPress={() => setCategorySelected(item)}
                                 isActive={categorySelected === item}
                             /> 
                         )}
                     </ScrollView>
-                </VStack>
+                </Box>
                 
                 <Input 
                     label='Nome do Serviço'
@@ -143,14 +143,14 @@ export function New() {
                         </Pressable> 
                     }
                 />
-
+                
                 <Progress 
-                    value={password.length} 
-                    max={20} 
+                    value={password.length === 0 ? 0 : calculatePasswordPercentage(passStrength)} 
+                    max={4} 
                     size='xs' 
-                    colorScheme={getColorScheme(assessPassStrength(password))}
+                    colorScheme={getColorScheme(passStrength)}
                 />
-                <Text fontSize='xs'>{assessPassStrength(password)}</Text>
+                <Text fontSize='xs'>{passStrength}</Text>
 
                 <Button
                     title='Salvar'

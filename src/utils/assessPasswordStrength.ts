@@ -9,7 +9,7 @@ export function assessPassStrength(pass: string) {
 
     if (pass.length > 8 && hasLetters && hasNumbers && hasSpecialCharacters) {
         return "Forte";
-    } else if (pass.length > 8 && (hasLetters || hasNumbers || hasSpecialCharacters)) {
+    } else if (pass.length > 8 && (hasLetters && hasNumbers || hasSpecialCharacters)) {
         return "Boa";
     } else if (pass.length > 8 && (hasLetters || hasNumbers)) {
         return "Média";

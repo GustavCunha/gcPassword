@@ -1,20 +1,24 @@
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import * as Clipboard from 'expo-clipboard';
-import { FlatList, HStack, Pressable, Text, VStack, useToast } from 'native-base';
-import { SignOut } from 'phosphor-react-native';
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
+import { Box, FlatList, HStack, Pressable, ScrollView, Text, VStack, useToast } from 'native-base';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import * as Clipboard from 'expo-clipboard';
+import { SignOut } from 'phosphor-react-native';
 
 import { Button } from '@components/Button';
 import { Card } from '@components/Card';
+import { CategoryCard } from '@components/CategoryCard';
 import { ListEmpty } from '@components/ListEmpty';
 import { Loading } from '@components/Loading';
 
 import { useAuth } from '../hook/useAuth';
 
+import { categories } from '@utils/categories';
+
 import { PassDTO } from '@storage/DTO/Pass';
 import { passwordRemoveById } from '@storage/password/passwordRemoveById';
 import { passwordsGetAll } from '@storage/password/passwordsGetAll';
+import { passwordsGetByCategory } from '@storage/password/passwordsGetByCategory';
 
 
 export function Home() {
@@ -22,8 +26,9 @@ export function Home() {
     const toast = useToast();
     const {signOut} = useAuth();
 
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<PassDTO[]>([]);
+    const [categorySelected, setCategorySelected] = useState('')
 
     function handleAdd() {
         navigation.navigate("New");
@@ -33,9 +38,14 @@ export function Home() {
         signOut();
     }
 
+    function handleCategorySelected(category: string) {
+        category === categorySelected ? setCategorySelected('') : setCategorySelected(category)
+    }
+
     async function fetchData() {
         try {
-            const passwords = await passwordsGetAll();
+            setIsLoading(true);
+            const passwords = categorySelected.length === 0 ? await passwordsGetAll() : await passwordsGetByCategory(categorySelected);
             setData(passwords);
         } catch (error) {
             console.log(error)
@@ -86,7 +96,7 @@ export function Home() {
 
     useFocusEffect(useCallback(() => {
         fetchData();
-    }, []));
+    }, [categorySelected]));
 
     return (
         <VStack 
@@ -118,6 +128,26 @@ export function Home() {
             </HStack>
             
             <VStack flex={1} bg='white' w='full' px={6} pt={6}>
+                <Box mb={5}>
+                    <Text fontSize='lg' fontFamily='heading' color='blueGray.800' mb={3}>
+                        Categoria
+                    </Text>
+
+                    <ScrollView 
+                        horizontal 
+                        showsHorizontalScrollIndicator={false} 
+                    >
+                        {categories.map(item => 
+                            <CategoryCard 
+                                key={item} 
+                                category={item}
+                                onPress={() => handleCategorySelected(item)}
+                                isActive={categorySelected === item}
+                            /> 
+                        )}
+                    </ScrollView>
+                </Box>
+
                 <HStack alignItems='center' justifyContent='space-between' mb={3}>
                     <Text fontSize='lg' fontFamily='heading' color='blueGray.800'>
                         Suas senhas
