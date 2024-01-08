@@ -19,10 +19,14 @@ export const theme = extendTheme({
         mono: 'Poppins_500Medium',
         body: 'Poppins_400Regular'
     },
-    size: {
-        SM: 14,
-        MD: 16,
-        LG: 18,
-        XL: 24
+    fontSizes: {
+        xs: 12,
+        sm: 14,
+        md: 16,
+        lg: 18,
+        xl: 20,
     },
+    sizes: {
+        14: 56
+    }
 })

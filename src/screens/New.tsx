@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Keyboard } from 'react-native';
-import { Box, Pressable, Progress, ScrollView, Text, VStack, useToast } from 'native-base';
+import { Box, Button as Btn, Progress, ScrollView, Text, VStack, useToast } from 'native-base';
 import { Eye, EyeSlash } from 'phosphor-react-native';
 import uuid from 'react-native-uuid';
 
@@ -18,7 +18,7 @@ import { calculatePasswordPercentage } from '@utils/calculatePasswordPercentage'
 import { theme } from '../styles/theme';
 
 export function New() {
-    const {colors, size} = theme;
+    const {colors} = theme;
     const toast = useToast();
 
     const [isLoading, setIsLoading] = useState(false);
@@ -36,11 +36,12 @@ export function New() {
             if (service.trim() === '' || 
                 user.trim() === '' || 
                 password.trim() === '' ||
-                categorySelected === null
+                categorySelected === ''
             ) {
                 return toast.show({
                     title: '⚠ Preencha todos os campos', 
                     placement: 'bottom',
+                    duration: 1000,
                     style: {backgroundColor: colors.error[400]}
                 })
             } 
@@ -87,8 +88,8 @@ export function New() {
     }, [password])
 
     return (
-        <VStack flex={1} bg='blueGray.800'>   
-            <ScrollView flex={1} bg='white' w='full' p={6} mt={2}>
+        <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+            <VStack flex={1} bg='white' p={6}>
                 <Text 
                     color='blueGray.800' 
                     mb={2}  
@@ -136,11 +137,11 @@ export function New() {
                     value={password}
                     onChangeText={setPassword} 
                     InputRightElement={
-                        <Pressable onPress={togglePasswordVisibility} p={2} borderLeftWidth={0.5}>
-                            {isVisiblePassword ? <Eye color={colors.gray_600} size={size.XL} /> :
-                                <EyeSlash color={colors.gray_600} size={size.XL} />   
+                        <Btn variant='unstyled' onPress={togglePasswordVisibility} borderLeftWidth={0.2}>
+                            {isVisiblePassword ? <Eye color={colors.gray_600} size='24' /> :
+                                <EyeSlash color={colors.gray_600} size='24' />   
                             }
-                        </Pressable> 
+                        </Btn> 
                     }
                 />
                 
@@ -158,7 +159,7 @@ export function New() {
                     my={5}
                     isLoading={isLoading}
                 />
-            </ScrollView>
-        </VStack>
+            </VStack>
+        </ScrollView>
     )
 }

@@ -108,9 +108,9 @@ export function Home() {
                 w='full' 
                 justifyContent='space-between' 
                 alignItems='center'
-                px={6}
-                pt={16}
-                pb={6}
+                p={6}
+                pt={10}
+                h={40}
                 borderBottomWidth={1}
             >
                 <VStack>
@@ -122,12 +122,12 @@ export function Home() {
                     </Text>
                 </VStack>
 
-                <Pressable onPress={handleSignOut} p={2} mr={-2}>
+                <Pressable onPress={handleSignOut} mr={-2}>
                     <SignOut color='white' size={36}/>
                 </Pressable>
             </HStack>
             
-            <VStack flex={1} bg='white' w='full' px={6} pt={6}>
+            <VStack flex={1} bg='white' w='full' px={6} pt={3}>
                 <Box mb={5}>
                     <Text fontSize='lg' fontFamily='heading' color='blueGray.800' mb={3}>
                         Categoria

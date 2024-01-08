@@ -1,42 +1,48 @@
-import { VStack, Icon, Text, Button, IButtonProps } from "native-base";
+import { Icon, Text, Center, Pressable, IPressableProps } from "native-base";
 import {Feather} from '@expo/vector-icons'
 import { iconChoice } from "@utils/iconChoice";
 
-type Props = IButtonProps & {
+type Props = IPressableProps & {
     category: string;
-    isActive?: boolean
+    isActive: boolean
 }
 
-export function CategoryCard({category, isActive = false, ...rest}: Props) {
+export function CategoryCard({category, isActive, ...rest}: Props) {
     return (
-        <Button
-            variant='unstyled'
+        <Pressable 
+            bg='muted.100'
             py={2}
-            mr={2}
-            bgColor={isActive ? 'blue.600' : 'muted.100'}
+            mr={3}
+            w={24}
             rounded='lg'
-            w='24'
+            justifyContent='center'
+            alignItems='center'
+            isPressed={isActive}
+            _pressed={{
+                bg: 'blue.600',
+                color: 'white'
+            }}
             {...rest}
         >
-            <VStack alignItems='center' justifyContent='center'>
+            <Center>
                 <Icon 
                     as={Feather} 
                     name={iconChoice(category)} 
                     size='lg' 
-                    color={isActive ? 'white' : 'blueGray.500'} 
                     mb={2}
+                    color={isActive ? 'white' : 'blueGray.500'} 
                 />
 
                 <Text 
                     fontSize='sm' 
                     fontFamily={isActive ? 'heading' : 'mono'}
-                    color={isActive ? 'white' : 'blueGray.500'}
                     textAlign='center'
                     adjustsFontSizeToFit
+                    color={isActive ? 'white' : 'blueGray.500'}
                 >
                     {category}
                 </Text>
-            </VStack>
-        </Button>
+            </Center>
+        </Pressable>
     )
 }

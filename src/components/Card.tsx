@@ -16,7 +16,7 @@ type Props = {
 }
 
 export function Card({ data, onCopy, onRemove }: Props) {
-    const {colors, size} = theme;
+    const {colors} = theme;
     const [isVisiblePassword, setIsVisiblePassword] = useState(false);
 
     function togglePasswordVisibility() {
@@ -44,8 +44,8 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderRightWidth={0.5}
                 borderRightColor='blueGray.500'
             >
-                {isVisiblePassword ? <EyeClosed color={colors.blueGray_500} size={size.XL} /> :
-                    <Eye color={colors.gray_600} size={size.XL} />   
+                {isVisiblePassword ? <EyeClosed color={colors.blueGray_500} size='24' /> :
+                    <Eye color={colors.gray_600} size='24' />   
                 }
             </Pressable>
 
@@ -85,7 +85,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderLeftWidth={.5}
                 borderLeftColor='blueGray.500'
             >
-                <Copy color={colors.blue_600} size={size.XL} />
+                <Copy color={colors.blue_600} size='24' />
             </Pressable>
 
             <Pressable
@@ -96,7 +96,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderLeftWidth={.5}
                 borderLeftColor='blueGray.500'
             >
-                <Trash color={colors.red_600} size={size.XL} />
+                <Trash color={colors.red_600} size='24' />
             </Pressable>
         </HStack>
     )

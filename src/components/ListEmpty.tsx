@@ -11,7 +11,7 @@ export function ListEmpty({message}: Props) {
 
     return (
         <VStack flex={1} alignItems='center' justifyContent='center' borderTopColor='black' borderTopWidth={0.5}>
-            <Password color={colors.blueGray_700} size={40} />
+            <Password color={colors.blue[600]} size={40} />
             <Text 
                 color='blueGray.800' 
                 fontSize='md' 

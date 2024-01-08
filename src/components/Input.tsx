@@ -9,7 +9,7 @@ export function Input({label, ...rest}: Props) {
         <>
             <Text 
                 color='blueGray.800' 
-                mb={2}  
+                mb={1}  
                 fontSize='md'
                 fontFamily='mono'
             >
@@ -17,21 +17,19 @@ export function Input({label, ...rest}: Props) {
             </Text>
             
             <NativeBaseInput
-                justifyContent='center'
                 bg='muted.100'
-                lineHeight='md'
-                size='md'
-                fontSize='md'
-                borderRadius='xl'
+                h={12}
+                px={4}
                 borderWidth={0.5}
-                autoCapitalize='none'
-                fontFamily='body'
+                borderRadius='xl'
+                fontSize='md'
                 color='blueGray.800'
+                fontFamily='body'
                 placeholderTextColor='blueGray.500'
                 _focus={{
+                    bgColor: 'muted.50',
                     borderWidth: 1,
-                    borderColor: 'blue.500',
-                    bg: 'white'
+                    borderColor: 'blue.500'
                 }}
                 {...rest}
             />
