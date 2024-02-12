@@ -3,24 +3,29 @@ import React from 'react';
 
 type Props = IButtonProps & {
     title: string;
+    variant?: 'solid' | 'outline'
   }
 
-export function Button({ title, ...rest }: Props) {
+export function Button({ title, variant = 'solid',  ...rest }: Props) {
     return (
         <NativeBaseButton
-            bg='blue.600'
+            bg={variant === 'outline' ? 'light.50' : 'blue.600'}
             h={12}
-            rounded='2xl'
+            rounded={24}
             shadow='4'
             _pressed={{
-                bg: 'blue.500'
+                bg: variant === 'outline' ? 'light.100' : 'blue.500'
             }}
             _spinner={{
                 size: 'lg'
             }}
             {...rest}
         >
-            <Text color='white' fontFamily='heading' fontSize='md'>
+            <Text 
+                color={variant === 'outline' ? 'blue.600' : 'light.50'} 
+                fontFamily='heading' 
+                fontSize='md'
+            >
                 {title}
             </Text>
         </NativeBaseButton>

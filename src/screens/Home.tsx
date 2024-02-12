@@ -109,9 +109,7 @@ export function Home() {
                 justifyContent='space-between' 
                 alignItems='center'
                 p={6}
-                pt={10}
-                h={40}
-                borderBottomWidth={1}
+                h={44}
             >
                 <VStack>
                     <Text color='light.100' fontSize='2xl' fontFamily='heading'>
@@ -122,8 +120,8 @@ export function Home() {
                     </Text>
                 </VStack>
 
-                <Pressable onPress={handleSignOut} mr={-2}>
-                    <SignOut color='white' size={36}/>
+                <Pressable onPress={handleSignOut} >
+                    <SignOut color='light.100' size={36}/>
                 </Pressable>
             </HStack>
             
@@ -148,7 +146,13 @@ export function Home() {
                     </ScrollView>
                 </Box>
 
-                <HStack alignItems='center' justifyContent='space-between' mb={3}>
+                <HStack 
+                    alignItems='center' 
+                    justifyContent='space-between' 
+                    pb={2}
+                    borderBottomWidth={0.5}
+                    borderBottomColor='blueGray.700'
+                >
                     <Text fontSize='lg' fontFamily='heading' color='blueGray.800'>
                         Suas senhas
                     </Text>
@@ -174,11 +178,13 @@ export function Home() {
                         ListEmptyComponent={() => (
                             <ListEmpty message={`Nenhuma senha armazenada\nQue tal adicionar a primeira?`}/>
                         )}
+                        my={3}
                     />
                 }
                 <Button 
-                    title='Adicionar' 
-                    m={5}
+                    title='Adicionar'
+                    mb={5}
+                    mx={7}
                     onPress={handleAdd}
                 />
             </VStack>

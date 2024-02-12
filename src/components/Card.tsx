@@ -26,7 +26,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
     return (
         <HStack
             bg='white'
-            borderColor='blueGray.400'
+            borderColor='blueGray.500'
             borderWidth={0.5}
             borderRadius='2xl'
             alignItems='center'
@@ -45,7 +45,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderRightColor='blueGray.500'
             >
                 {isVisiblePassword ? <EyeClosed color={colors.blueGray_500} size='24' /> :
-                    <Eye color={colors.gray_600} size='24' />   
+                    <Eye color={colors.blueGray_600} size='24' />   
                 }
             </Pressable>
 
@@ -55,15 +55,16 @@ export function Card({ data, onCopy, onRemove }: Props) {
                         as={Feather} 
                         name={iconChoice(data.category)} 
                         size='md' 
-                        color='blueGray.700'
+                        color='blueGray.800'
                         mr={1}
                     />
-                    <Heading 
-                        fontSize='lg' 
-                        color='blueGray.700'  
+                    <Text 
+                        fontSize='lg'
+                        fontFamily='heading' 
+                        color='blueGray.800'  
                     >
                         {data.service}
-                    </Heading>
+                    </Text>
                 </HStack>
 
                 {isVisiblePassword ?
@@ -71,7 +72,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                         {data.password}
                     </Text>
                     :
-                    <Text color='gray.600' fontSize='sm' fontFamily='body'>
+                    <Text color='blueGray.600' fontSize='sm' fontFamily='body'>
                         {data.user}
                     </Text>
                 }
@@ -85,7 +86,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderLeftWidth={.5}
                 borderLeftColor='blueGray.500'
             >
-                <Copy color={colors.blue_600} size='24' />
+                <Copy color={colors.blue[600]} size='24' />
             </Pressable>
 
             <Pressable
@@ -96,7 +97,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                 borderLeftWidth={.5}
                 borderLeftColor='blueGray.500'
             >
-                <Trash color={colors.red_600} size='24' />
+                <Trash color={colors.error[500]} size='24' />
             </Pressable>
         </HStack>
     )

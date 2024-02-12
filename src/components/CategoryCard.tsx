@@ -10,17 +10,17 @@ type Props = IPressableProps & {
 export function CategoryCard({category, isActive, ...rest}: Props) {
     return (
         <Pressable 
-            bg='muted.100'
-            py={2}
+            bg='light.100'
             mr={3}
             w={24}
-            rounded='lg'
+            h={24}
+            rounded={16}
             justifyContent='center'
             alignItems='center'
             isPressed={isActive}
             _pressed={{
                 bg: 'blue.600',
-                color: 'white'
+                color: 'light.100'
             }}
             {...rest}
         >
@@ -30,7 +30,7 @@ export function CategoryCard({category, isActive, ...rest}: Props) {
                     name={iconChoice(category)} 
                     size='lg' 
                     mb={2}
-                    color={isActive ? 'white' : 'blueGray.500'} 
+                    color={isActive ? 'light.100' : 'blueGray.500'} 
                 />
 
                 <Text 
@@ -38,7 +38,7 @@ export function CategoryCard({category, isActive, ...rest}: Props) {
                     fontFamily={isActive ? 'heading' : 'mono'}
                     textAlign='center'
                     adjustsFontSizeToFit
-                    color={isActive ? 'white' : 'blueGray.500'}
+                    color={isActive ? 'light.100' : 'blueGray.500'}
                 >
                     {category}
                 </Text>

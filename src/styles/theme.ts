@@ -4,14 +4,11 @@ export const theme = extendTheme({
     colors: {
         light_100: '#f5f5f4',
 
-        blue_600: '#2563eb',
+        primary: '#2563EB',
 
-        blueGray_500: '#64748b',
+        blueGray_500: '#64748B',
+        blueGray_600: '#475569',
         blueGray_700: '#334155',
-
-        gray_600: '#52525b',
-
-        red_600: '#dc2626'
 
     },
     fonts: {
@@ -27,6 +24,7 @@ export const theme = extendTheme({
         xl: 20,
     },
     sizes: {
-        14: 56
+        14: 56,
+        44: 175
     }
 })

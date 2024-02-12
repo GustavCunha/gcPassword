@@ -89,17 +89,17 @@ export function New() {
 
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
-            <VStack flex={1} bg='white' p={6}>
-                <Text 
-                    color='blueGray.800' 
-                    mb={2}  
-                    fontSize='md'
-                    fontFamily='mono'
-                >
-                    Categoria
-                </Text>
-
+            <VStack flex={1} bg='white' px={6} pt={5}>
                 <Box mb={5}>
+                    <Text 
+                        color='blueGray.800' 
+                        fontSize='md'
+                        fontFamily='mono'
+                        mb={2}  
+                    >
+                        Categoria
+                    </Text>
+
                     <ScrollView 
                         horizontal 
                         showsHorizontalScrollIndicator={false} 
@@ -138,8 +138,8 @@ export function New() {
                     onChangeText={setPassword} 
                     InputRightElement={
                         <Btn variant='unstyled' onPress={togglePasswordVisibility} borderLeftWidth={0.2}>
-                            {isVisiblePassword ? <Eye color={colors.gray_600} size='24' /> :
-                                <EyeSlash color={colors.gray_600} size='24' />   
+                            {isVisiblePassword ? <Eye color={colors.blueGray_600} size='24' /> :
+                                <EyeSlash color={colors.blueGray_600} size='24' />   
                             }
                         </Btn> 
                     }
@@ -156,7 +156,7 @@ export function New() {
                 <Button
                     title='Salvar'
                     onPress={handleNew}
-                    my={5}
+                    mt={8}
                     isLoading={isLoading}
                 />
             </VStack>

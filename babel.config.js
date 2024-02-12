@@ -13,6 +13,9 @@ module.exports = function(api) {
             '@screens': './src/screens',
             '@storage': './src/storage',
             '@utils': './src/utils',
+            '@hooks': './src/hooks',
+            '@contexts': './src/contexts',
+            '@routes': './src/routes'
           }
         }
       ]

@@ -19,6 +19,15 @@
       "@utils/*": [
         "./src/utils/*"
       ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@contexts/*": [
+        "./src/contexts/*"
+      ],
+      "@routes/*": [
+        "./src/routes/*"
+      ]
     }
   }
 }
