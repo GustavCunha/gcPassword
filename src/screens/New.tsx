@@ -42,7 +42,7 @@ export function New() {
                     title: '⚠ Preencha todos os campos', 
                     placement: 'bottom',
                     duration: 1000,
-                    style: {backgroundColor: colors.error[400]}
+                    bgColor: 'error.400'
                 })
             } 
             setIsLoading(true)
@@ -56,7 +56,7 @@ export function New() {
                 title: 'Salvo com sucesso!', 
                 placement: 'bottom',
                 duration: 1000,
-                style: {backgroundColor: colors.success[400]}
+                bgColor: 'success.400'
             })
             resetFields()
         } catch (error) {
@@ -65,7 +65,7 @@ export function New() {
                 title: '‼ Não foi possível cadastrar!', 
                 placement: 'bottom',
                 duration: 800,
-                style: {backgroundColor: colors.error[400]}
+                bgColor: 'error.400'
             })
         } finally {
             setIsLoading(false)
@@ -118,28 +118,28 @@ export function New() {
                 <Input 
                     label='Nome do Serviço'
                     placeholder='Ex.: Google'
-                    mb={5}
+                    mb={3}
                     value={service} 
                     onChangeText={setService}
                 />
                 <Input 
                     label='E-mail ou usuário'
                     placeholder='Ex.: user.teste'
-                    mb={5}
+                    mb={3}
                     value={user}
                     onChangeText={setUser}
                 />
                 <Input 
                     label='Senha'
                     placeholder='Digite uma senha'
-                    mb={2}
+                    mb={3}
                     secureTextEntry={isVisiblePassword}
                     value={password}
                     onChangeText={setPassword} 
                     InputRightElement={
                         <Btn variant='unstyled' onPress={togglePasswordVisibility} borderLeftWidth={0.2}>
-                            {isVisiblePassword ? <Eye color={colors.blueGray_600} size='24' /> :
-                                <EyeSlash color={colors.blueGray_600} size='24' />   
+                            {isVisiblePassword ? <Eye color={colors.blueGray_600} size={24} /> :
+                                <EyeSlash color={colors.blueGray_600} size={24} />   
                             }
                         </Btn> 
                     }
@@ -151,12 +151,12 @@ export function New() {
                     size='xs' 
                     colorScheme={getColorScheme(passStrength)}
                 />
-                <Text fontSize='xs'>{passStrength}</Text>
+                <Text mt={1} fontSize='xs'>{passStrength}</Text>
 
                 <Button
                     title='Salvar'
                     onPress={handleNew}
-                    mt={8}
+                    mt={12}
                     isLoading={isLoading}
                 />
             </VStack>

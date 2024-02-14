@@ -121,7 +121,7 @@ export function Home() {
                 </VStack>
 
                 <Pressable onPress={handleSignOut} >
-                    <SignOut color='light.100' size={36}/>
+                    <SignOut color='white' size={36}/>
                 </Pressable>
             </HStack>
             

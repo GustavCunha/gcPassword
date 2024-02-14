@@ -8,17 +8,23 @@ interface AuthProviderProps {
 }
 
 export interface AuthContextDataProps {
-    logged: boolean;
+    user: User;
     isUserLoading: boolean;
     signInBiometric: () => Promise<void>;
     signInPass: (pass: string) => Promise<void>;
     signOut: () => Promise<void>;
 }
 
+type User = {
+    logged: boolean;
+    name: string;
+    byBiometric?: boolean;
+}
+
 export const AuthContext = createContext({} as AuthContextDataProps);
 
 export function AuthContextProvider({children}: AuthProviderProps) {
-    const [logged, setLogged] = useState(false);
+    const [user, setUser] = useState<User>({} as User);
     const [isUserLoading, setIsUserLoading] = useState(false);
 
     async function handleAuthentication() {
@@ -33,7 +39,11 @@ export function AuthContextProvider({children}: AuthProviderProps) {
             fallbackLabel: 'Biometria não reconhecida'
         })
 
-        setLogged(auth.success)
+        setUser({
+            logged: true,
+            name: '',
+            byBiometric: auth.success
+        })
     }
 
     async function signInBiometric() {
@@ -51,9 +61,9 @@ export function AuthContextProvider({children}: AuthProviderProps) {
     async function signInPass(password: string) {
         try {
             setIsUserLoading(true)
-            const pass = await getLogin();
-            if(pass !== null && pass.pass === password) {
-                setLogged(true) 
+            const login = await getLogin();
+            if(login !== null && login.pass === password) {
+                setUser({logged: true, name: login.name}); 
             } else {
                 throw new Error('Autenticação inválida')
             }
@@ -66,7 +76,7 @@ export function AuthContextProvider({children}: AuthProviderProps) {
     }
 
     async function signOut() {
-        setLogged(false)
+        setUser({} as User)
     }
 
     return (
@@ -75,7 +85,7 @@ export function AuthContextProvider({children}: AuthProviderProps) {
             signInPass,
             signOut,
             isUserLoading,
-            logged
+            user
         }}>
             {children}
         </AuthContext.Provider>

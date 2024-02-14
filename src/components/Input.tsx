@@ -25,6 +25,7 @@ export function Input({label, ...rest}: Props) {
                 color='blueGray.800'
                 fontFamily='body'
                 placeholderTextColor='blueGray.500'
+                autoCapitalize='none'
                 _focus={{
                     bgColor: 'light.50',
                     borderWidth: 0.5,

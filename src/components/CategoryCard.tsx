@@ -12,15 +12,14 @@ export function CategoryCard({category, isActive, ...rest}: Props) {
         <Pressable 
             bg='light.100'
             mr={3}
-            w={24}
-            h={24}
+            w={20}
+            h={20}
             rounded={16}
             justifyContent='center'
             alignItems='center'
             isPressed={isActive}
             _pressed={{
                 bg: 'blue.600',
-                color: 'light.100'
             }}
             {...rest}
         >
@@ -28,13 +27,13 @@ export function CategoryCard({category, isActive, ...rest}: Props) {
                 <Icon 
                     as={Feather} 
                     name={iconChoice(category)} 
-                    size='lg' 
+                    size='md' 
                     mb={2}
                     color={isActive ? 'light.100' : 'blueGray.500'} 
                 />
 
                 <Text 
-                    fontSize='sm' 
+                    fontSize='xs' 
                     fontFamily={isActive ? 'heading' : 'mono'}
                     textAlign='center'
                     adjustsFontSizeToFit

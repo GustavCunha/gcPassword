@@ -6,11 +6,11 @@ import { AppRoutes } from './app.routes';
 import { AuthRoutes } from './auth.routes';
 
 export function Routes() {
-    const {logged} = useAuth();
+    const {user} = useAuth();
 
     return (
         <NavigationContainer>
-            {logged ? <AppRoutes/> : <AuthRoutes />}
+            {user.logged ? <AppRoutes/> : <AuthRoutes />}
         </NavigationContainer>
     )
 }

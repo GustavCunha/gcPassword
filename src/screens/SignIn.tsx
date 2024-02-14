@@ -1,7 +1,6 @@
-import { Button as Btn, Center, Image, Pressable, ScrollView, Text, VStack, useToast } from "native-base";
-import { Eye, EyeSlash, Fingerprint } from "phosphor-react-native";
 import React, { useState } from "react";
-import { Alert } from "react-native";
+import { Box, Button as Btn, Center, Image, Pressable, ScrollView, Text, VStack, useToast } from "native-base";
+import { Eye, EyeSlash, Fingerprint } from "phosphor-react-native";
 import { useNavigation } from "@react-navigation/native";
 import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
 
@@ -23,16 +22,9 @@ export function SignIn() {
 
     const [isVisiblePassword, setIsVisiblePassword] = useState(true);
     const [password, setPassword] = useState('');
-    const [loginWithPass, setLoginWithPass] = useState(false);
 
     function togglePasswordVisibility() {
         setIsVisiblePassword(prevState => !prevState);
-    }
-
-    function toggleLoginWithPass() {
-        if(!loginWithPass) {
-            setLoginWithPass(prevState => !prevState);
-        }
     }
 
     async function login() {
@@ -44,8 +36,12 @@ export function SignIn() {
             })
         try {
             await signInPass(password)
-        } catch (error) {
-            return Alert.alert('Erro', error.message)
+        } catch (error: any) {
+            return toast.show({
+                title: error.message,
+                placement: 'top',
+                bgColor: 'error.400'
+            }) 
         }
     }
 
@@ -79,40 +75,38 @@ export function SignIn() {
                 </Center>
 
                 
-                <Center mt={5} mb={loginWithPass ? 7 : 16}>
+                <Center mt={5} mb={7}>
                     <Text color='blueGray.600' fontSize='md' fontFamily='heading' >
                         Acesse sua conta
                     </Text>
                 </Center>
                 
-                {loginWithPass && (
-                    <VStack mb={7}> 
-                        <Input
-                            label="Senha"
-                            placeholder="***"
-                            secureTextEntry={isVisiblePassword}
-                            value={password}
-                            onChangeText={setPassword}
-                            onSubmitEditing={login}
-                            InputRightElement={
-                                <Btn variant='unstyled' onPress={togglePasswordVisibility} borderLeftWidth={0.2}>
-                                    {isVisiblePassword ? <Eye color={colors.blueGray_600} size='24' /> :
-                                        <EyeSlash color={colors.blueGray_600} size='24' />   
-                                    }
-                                </Btn> 
-                            }
-                        /> 
+                <VStack mb={7}> 
+                    <Input
+                        label="Senha"
+                        placeholder="***"
+                        secureTextEntry={isVisiblePassword}
+                        value={password}
+                        onChangeText={setPassword}
+                        onSubmitEditing={login}
+                        InputRightElement={
+                            <Btn variant='unstyled' onPress={togglePasswordVisibility} borderLeftWidth={0.2}>
+                                {isVisiblePassword ? <Eye color={colors.blueGray_600} size='24' /> :
+                                    <EyeSlash color={colors.blueGray_600} size='24' />   
+                                }
+                            </Btn> 
+                        }
+                    /> 
 
-                        <Text textAlign='center' color='blueGray.500' mt={5}>Não tem senha cadastrada?
-                            <Text fontFamily='heading' color='blueGray.600' onPress={handleNewAccount}> Cadastre agora</Text>
-                        </Text>
-                    </VStack>
-                )}
+                    <Text textAlign='center' color='blueGray.500' mt={5}>Não tem senha cadastrada?
+                        <Text fontFamily='heading' color='blueGray.600' onPress={handleNewAccount}> Cadastre agora</Text>
+                    </Text>
+                </VStack>
                 
-                <VStack>
+                <Box>
                     <Button 
-                        title={loginWithPass ? 'Entrar' : 'Acessar com senha'} 
-                        onPress={loginWithPass ? login : toggleLoginWithPass}
+                        title='Acessar com senha' 
+                        onPress={login}
                     />
 
                     <Text my={3} textAlign='center' color='blueGray.600'>Ou</Text>
@@ -121,7 +115,7 @@ export function SignIn() {
                         <Fingerprint color={colors.primary} size={40}/>
                         <Text color='blue.600' fontFamily='mono' fontSize='md'>Acessar com Biometria</Text>
                     </Pressable>        
-                </VStack>
+                </Box>
             </VStack>
         </ScrollView>
     )

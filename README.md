@@ -39,7 +39,7 @@ O **Guardião** é um aplicativo mobile de armazanamento de senhas. Proteja suas
  
 - [ ] **Geração de Senhas**: Criação e sugestões de senhas fortes e exclusivas para suas contas.
 
-- [ ] **Organização Inteligente**: Organização de suas senhas e dados confidenciais em categorias para fácil acesso.
+- [X] **Organização Inteligente**: Organização de suas senhas e dados confidenciais em categorias para fácil acesso.
 
 ---
 

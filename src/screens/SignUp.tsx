@@ -75,7 +75,7 @@ export function SignUp() {
                 </Center>
 
                 <Center mt={5} mb={7}>
-                    <Text color='blueGray.600' fontSize='lg' fontFamily='heading'>
+                    <Text color='blueGray.600' fontSize='md' fontFamily='heading'>
                         Crie sua conta
                     </Text>
                 </Center>
