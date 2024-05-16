@@ -1,11 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { Alert } from 'react-native';
-import { Box, FlatList, HStack, Pressable, ScrollView, Text, VStack, useToast } from 'native-base';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { Box, FlatList, HStack, Pressable, ScrollView, Text, VStack, useTheme, useToast } from 'native-base';
+import { useFocusEffect } from '@react-navigation/native';
 import * as Clipboard from 'expo-clipboard';
-import { SignOut } from 'phosphor-react-native';
+import { Moon, SignOut, Sun, SunHorizon } from 'phosphor-react-native';
 
-import { Button } from '@components/Button';
 import { Card } from '@components/Card';
 import { CategoryCard } from '@components/CategoryCard';
 import { ListEmpty } from '@components/ListEmpty';
@@ -20,19 +19,18 @@ import { passwordRemoveById } from '@storage/password/passwordRemoveById';
 import { passwordsGetAll } from '@storage/password/passwordsGetAll';
 import { passwordsGetByCategory } from '@storage/password/passwordsGetByCategory';
 
+type Greeting = 'Bom dia' | 'Boa tarde' | 'Boa noite';
 
 export function Home() {
-    const navigation = useNavigation();
     const toast = useToast();
-    const {signOut} = useAuth();
+    const {user, signOut} = useAuth();
+    const {colors} = useTheme();
 
     const [isLoading, setIsLoading] = useState(true);
     const [data, setData] = useState<PassDTO[]>([]);
-    const [categorySelected, setCategorySelected] = useState('')
+    const [categorySelected, setCategorySelected] = useState('');
+    const [greetings, setGreetings] = useState<Greeting | null>(null);
 
-    function handleAdd() {
-        navigation.navigate("New");
-    }
 
     function handleSignOut() {
         signOut();
@@ -94,9 +92,31 @@ export function Home() {
         }
     }
 
-    useFocusEffect(useCallback(() => {
-        fetchData();
-    }, [categorySelected]));
+    function getGreetings() {
+        const currentDate = new Date();
+        const currentTime = currentDate.getHours();
+
+        if(currentTime >= 5 && currentTime < 12) {
+            setGreetings('Bom dia')
+        } else if(currentTime >= 12 && currentTime < 18) {
+            setGreetings('Boa tarde')
+        } else {
+            setGreetings('Boa noite')
+        }
+    }
+
+    const icons: Record<Greeting, JSX.Element> = {
+        'Bom dia': <Sun size={20} color={colors.yellow[300]} />,
+        'Boa tarde': <SunHorizon size={20} color={colors.orange[400]}/>,
+        'Boa noite': <Moon size={20} color={colors.white} />,
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            fetchData();
+            getGreetings();
+        }, [categorySelected])
+    );
 
     return (
         <VStack 
@@ -109,15 +129,19 @@ export function Home() {
                 justifyContent='space-between' 
                 alignItems='center'
                 p={6}
-                h={44}
+                h={40}
             >
                 <VStack>
-                    <Text color='light.100' fontSize='2xl' fontFamily='heading'>
-                        Olá! 😊
+                    <Text color='light.100' fontSize='xl' fontFamily='heading'>
+                        Olá, {user.data.name}!
                     </Text>
-                    <Text color='light.100' fontSize='sm' fontFamily='body' fontStyle='italic'>
-                        Sinta-se seguro aqui 
-                    </Text>
+                    <HStack>
+                        <Text color='light.100' fontSize='sm' fontFamily='body' fontStyle='italic' mr={1}>
+                            {greetings}
+                        </Text>
+
+                        {greetings && icons[greetings]}
+                    </HStack>
                 </VStack>
 
                 <Pressable onPress={handleSignOut} >
@@ -181,12 +205,6 @@ export function Home() {
                         my={3}
                     />
                 }
-                <Button 
-                    title='Adicionar'
-                    mb={5}
-                    mx={7}
-                    onPress={handleAdd}
-                />
             </VStack>
         </VStack>
     )

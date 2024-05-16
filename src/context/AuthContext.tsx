@@ -1,4 +1,5 @@
-import { getLogin } from '@storage/login/getLogin';
+import { UserDTO } from '@storage/DTO/User';
+import { login } from '@storage/user/login';
 import * as LocalAuthentication from 'expo-local-authentication';
 import { ReactNode, createContext, useState } from 'react';
 import { Alert } from 'react-native';
@@ -17,7 +18,7 @@ export interface AuthContextDataProps {
 
 type User = {
     logged: boolean;
-    name: string;
+    data: UserDTO;
     byBiometric?: boolean;
 }
 
@@ -28,22 +29,28 @@ export function AuthContextProvider({children}: AuthProviderProps) {
     const [isUserLoading, setIsUserLoading] = useState(false);
 
     async function handleAuthentication() {
-        const isBiometricEnrolled = await LocalAuthentication.isEnrolledAsync();
+        const data = await login();
 
-        if (!isBiometricEnrolled) {
-            return Alert.alert('Login', 'Nenhuma biometria encontrada. Por favor, cadastre no dispositivo ')
+        if(data) {
+            const isBiometricEnrolled = await LocalAuthentication.isEnrolledAsync();
+    
+            if (!isBiometricEnrolled) {
+                return Alert.alert('Login', 'Nenhuma biometria encontrada. Por favor, cadastre no dispositivo ')
+            }
+    
+            const auth = await LocalAuthentication.authenticateAsync({
+                promptMessage: 'Acesse com Biometria',
+                fallbackLabel: 'Biometria não reconhecida'
+            })
+    
+            setUser({
+                logged: true,
+                data,
+                byBiometric: auth.success
+            })
+        } else {
+            throw new Error('É preciso se cadastrar primeiro!')
         }
-
-        const auth = await LocalAuthentication.authenticateAsync({
-            promptMessage: 'Acesse com Biometria',
-            fallbackLabel: 'Biometria não reconhecida'
-        })
-
-        setUser({
-            logged: true,
-            name: '',
-            byBiometric: auth.success
-        })
     }
 
     async function signInBiometric() {
@@ -58,12 +65,14 @@ export function AuthContextProvider({children}: AuthProviderProps) {
         }
     }
 
-    async function signInPass(password: string) {
+    async function signInPass(pass: string) {
         try {
             setIsUserLoading(true)
-            const login = await getLogin();
-            if(login !== null && login.pass === password) {
-                setUser({logged: true, name: login.name}); 
+            const data = await login();
+            if(data && data.password === pass) {
+                setUser({
+                    logged: true, data
+                })
             } else {
                 throw new Error('Autenticação inválida')
             }

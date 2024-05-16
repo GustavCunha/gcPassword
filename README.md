@@ -17,7 +17,7 @@ O aplicativo Guardião está sendo desenvolvido utilizando as seguintes tecnolog
 O **Guardião** é um aplicativo mobile de armazanamento de senhas. Proteja suas senhas, simplifique sua vida digital e garanta a segurança dos seus dados com o nosso app, o *"Guardião"*. Nunca mais se preocupe em esquecer senhas complexas ou em manter o controle de inúmeras contas online. 
 
 ### Layout
-![Layout](./src/images/layout.png)
+![Layout](.github/Protótipo.gif)
 
 ## Sobre
 

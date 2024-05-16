@@ -1,17 +1,19 @@
-import React, { useState } from "react";
-import { Box, Button as Btn, Center, Image, Pressable, ScrollView, Text, VStack, useToast } from "native-base";
-import { Eye, EyeSlash, Fingerprint } from "phosphor-react-native";
-import { useNavigation } from "@react-navigation/native";
-import { AuthNavigatorRoutesProps } from "@routes/auth.routes";
+import React, { useState } from 'react';
+import { Box, Button as Btn, Center, Image, Pressable, ScrollView, Text, VStack, useToast } from 'native-base';
+import { Eye, EyeSlash, Fingerprint } from 'phosphor-react-native';
+import { useNavigation } from '@react-navigation/native';
+import { AuthNavigatorRoutesProps } from '@routes/auth.routes';
 
-import { Button } from "@components/Button";
-import { Input } from "@components/Input";
+import { Button } from '@components/Button';
+import { Input } from '@components/Input';
 
 import logo from '../images/padlock.png';
 
-import { useAuth } from "../hook/useAuth";
+import { useAuth } from '../hook/useAuth';
 
-import { theme } from "../styles/theme";
+import { theme } from '../styles/theme';
+
+type TypeLogin = 'Pass' | 'Biometric'; 
 
 export function SignIn() {
     const navigation = useNavigation<AuthNavigatorRoutesProps>();
@@ -27,15 +29,19 @@ export function SignIn() {
         setIsVisiblePassword(prevState => !prevState);
     }
 
-    async function login() {
-        if (password.trim() === '') 
-            return toast.show({
-                title: '⚠ Informe a senha!', 
-                placement: 'top',
-                bgColor: 'error.400'
-            })
+    async function login(type: TypeLogin) {
         try {
-            await signInPass(password)
+            if(type === 'Pass')  {
+                if (password.trim() === '') 
+                    return toast.show({
+                        title: '⚠ Informe a senha!', 
+                        placement: 'top',
+                        bgColor: 'error.400'
+                    }) 
+                await signInPass(password) 
+            } else {
+                await signInBiometric();
+            }
         } catch (error: any) {
             return toast.show({
                 title: error.message,
@@ -55,6 +61,7 @@ export function SignIn() {
                 <Center>
                     <Image 
                         source={logo} 
+                        defaultSource={logo}
                         alt='Logo' 
                         size={44} 
                     />
@@ -83,12 +90,12 @@ export function SignIn() {
                 
                 <VStack mb={7}> 
                     <Input
-                        label="Senha"
-                        placeholder="***"
+                        label='Senha'
+                        placeholder='***'
                         secureTextEntry={isVisiblePassword}
                         value={password}
                         onChangeText={setPassword}
-                        onSubmitEditing={login}
+                        onSubmitEditing={() => login('Pass')}
                         InputRightElement={
                             <Btn variant='unstyled' onPress={togglePasswordVisibility} borderLeftWidth={0.2}>
                                 {isVisiblePassword ? <Eye color={colors.blueGray_600} size='24' /> :
@@ -98,7 +105,8 @@ export function SignIn() {
                         }
                     /> 
 
-                    <Text textAlign='center' color='blueGray.500' mt={5}>Não tem senha cadastrada?
+                    <Text textAlign='center' color='blueGray.500' mt={5}>
+                        Não tem senha cadastrada?
                         <Text fontFamily='heading' color='blueGray.600' onPress={handleNewAccount}> Cadastre agora</Text>
                     </Text>
                 </VStack>
@@ -106,12 +114,12 @@ export function SignIn() {
                 <Box>
                     <Button 
                         title='Acessar com senha' 
-                        onPress={login}
+                        onPress={() => login('Pass')}
                     />
 
                     <Text my={3} textAlign='center' color='blueGray.600'>Ou</Text>
 
-                    <Pressable alignItems='center' onPress={signInBiometric}>
+                    <Pressable alignItems='center' onPress={() => login('Biometric')}>
                         <Fingerprint color={colors.primary} size={40}/>
                         <Text color='blue.600' fontFamily='mono' fontSize='md'>Acessar com Biometria</Text>
                     </Pressable>        

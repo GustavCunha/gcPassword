@@ -1,36 +1,43 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Center, Image, ScrollView, Text, VStack, useToast } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver} from '@hookform/resolvers/yup';
 
 import logo from '../images/padlock.png';
 
+import { createdUser } from '@storage/user/createUser';
+import { UserDTO } from '@storage/DTO/User';
+
 import { Input } from '@components/Input';
 import { Button } from '@components/Button';
-import { createdLogin } from '@storage/login/createdLogin';
+
+const signUpSchema = yup.object({
+    name: yup.string().required('Informe o nome.'),
+    email: yup.string().required('Informe o E-mail.').email('E-mail inválido'),
+    password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 dígitos.')
+})
 
 export function SignUp() {
     const navigation = useNavigation();
     const toast = useToast();
 
-    const [name, setName] = useState('');
-    const [pass, setPass] = useState('');
+    const {control, handleSubmit, formState: {errors}} = useForm<UserDTO>({
+        resolver: yupResolver(signUpSchema),
+    });
+
     const [isLoading, setIsLoading] = useState(false);
 
     function handleGoBack() {
         navigation.goBack();
     }
 
-    async function handleSignUp() {
+    async function handleSignUp({name, email, password}: UserDTO) {
         try {
             setIsLoading(true);
-            if (name.trim() === '' || pass.trim() === '') {
-                return toast.show({
-                    title: 'Preencha todos os campos',
-                    placement: 'top',
-                    bgColor: 'error.400'
-                })
-            }
-            await createdLogin(name, pass);
+            const data = {name: name.trim(), email: email.trim(), password: password.trim()};
+            await createdUser(data);
             toast.show({
                 title: 'Salvo com sucesso!', 
                 placement: 'bottom',
@@ -40,7 +47,6 @@ export function SignUp() {
             handleGoBack();
         } catch (error) {
             setIsLoading(false)
-            console.log(error)
             toast.show({
                 title: 'Não foi possível criar a conta. Tente novamente mais tarde',
                 placement: 'top',
@@ -50,11 +56,15 @@ export function SignUp() {
     }
 
     return (
-        <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
-            <VStack flex={1} pt={16} px={10} bg='white'>
+        <ScrollView 
+            contentContainerStyle={{flexGrow: 1, paddingBottom: 50, backgroundColor: 'white'}} 
+            showsVerticalScrollIndicator={false}
+        >
+            <VStack flex={1} pt={16} px={10} >
                 <Center>
                     <Image 
                         source={logo} 
+                        defaultSource={logo}
                         alt='Logo' 
                         size={44} 
                     />
@@ -65,7 +75,7 @@ export function SignUp() {
 
                     <Text 
                         textAlign='center' 
-                        fontSize='sm'
+                        fontSize='xs'
                         fontFamily='body'
                     >
                         Proteja suas senhas, simplifique sua vida digital e 
@@ -74,32 +84,63 @@ export function SignUp() {
                     </Text>
                 </Center>
 
-                <Center mt={5} mb={7}>
+                <Center mt={5} mb={5}>
                     <Text color='blueGray.600' fontSize='md' fontFamily='heading'>
                         Crie sua conta
                     </Text>
                 </Center>
 
                 <VStack mb={10}>
-                    <Input
-                        label='Qual é seu nome?'
-                        placeholder='Ex.: Fulano'
-                        mb={3}
-                        onChangeText={setName}
+                    <Controller 
+                        control={control}
+                        name='name'
+                        render={({field: {onChange, value}}) => (
+                            <Input
+                                label='Nome'
+                                placeholder='Informe seu nome'
+                                value={value}
+                                onChangeText={onChange}
+                                errorMessage={errors.name?.message}
+                            />
+                        )}
                     />
 
-                    <Input 
-                        label='Crie uma senha'
-                        placeholder="***"
-                        mb={3}
-                        onChangeText={setPass}
+                    <Controller 
+                        control={control}
+                        name='email'
+                        render={({field: {onChange, value}}) => (
+                            <Input
+                                label='E-mail'
+                                placeholder='Informe seu e-mail'
+                                value={value}
+                                onChangeText={onChange}
+                                errorMessage={errors.email?.message}
+                            />
+                        )}
+                    />
+                    <Controller 
+                        control={control}
+                        name='password'
+                        render={({field: {onChange, value}}) => (
+                            <Input
+                                label='Crie uma senha'
+                                placeholder='****'
+                                value={value}
+                                onChangeText={onChange}
+                                errorMessage={errors.password?.message}
+                            />
+                        )}
                     />
                 </VStack>
 
                 <VStack space={5}>
-                    <Button title="Salvar" onPress={handleSignUp} isLoading={isLoading}/>
+                    <Button 
+                        title='Salvar' 
+                        onPress={handleSubmit(handleSignUp)} 
+                        isLoading={isLoading}
+                    />
 
-                    <Button variant='outline' title="Voltar para o login" onPress={handleGoBack}/>
+                    <Button variant='outline' title='Voltar para o login' onPress={handleGoBack}/>
                 </VStack>
             </VStack>
         </ScrollView>

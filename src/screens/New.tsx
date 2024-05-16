@@ -16,6 +16,7 @@ import { getColorScheme } from '@utils/getColorScheme';
 import { calculatePasswordPercentage } from '@utils/calculatePasswordPercentage';
 
 import { theme } from '../styles/theme';
+import { Header } from '@components/Header';
 
 export function New() {
     const {colors} = theme;
@@ -89,6 +90,8 @@ export function New() {
 
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}} showsVerticalScrollIndicator={false}>
+            <Header title='Cadastro'/>
+            
             <VStack flex={1} bg='white' px={6} pt={5}>
                 <Box mb={5}>
                     <Text 

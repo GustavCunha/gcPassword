@@ -72,7 +72,7 @@ export function Card({ data, onCopy, onRemove }: Props) {
                         {data.password}
                     </Text>
                     :
-                    <Text color='blueGray.600' fontSize='sm' fontFamily='body'>
+                    <Text color='blueGray.600' fontSize='xs' fontFamily='body' numberOfLines={1}>
                         {data.user}
                     </Text>
                 }
