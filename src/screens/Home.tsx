@@ -47,7 +47,11 @@ export function Home() {
             setData(passwords);
         } catch (error) {
             console.log(error)
-            Alert.alert('Senhas', 'Não foi possível carregar os dados de senhas.')
+            toast.show({
+                title: 'Não foi possível carregar os dados!',
+                placement: 'top',
+                bgColor: 'error.400'
+            })
         } finally {
             setIsLoading(false)
         }
@@ -58,8 +62,12 @@ export function Home() {
             await passwordRemoveById(id);
             fetchData();
         } catch (error) {
-            console.log(error)
-            Alert.alert('Excluir Senha', 'Não foi possível excluir os dados dessa senha.')
+            console.log(error);
+            toast.show({
+                title: 'Não foi possível excluir essa senha!',
+                placement: 'top',
+                bgColor: 'error.400'
+            })
         }
     }
 
@@ -88,7 +96,11 @@ export function Home() {
                 
         } catch (error) {
             console.log(error);
-            Alert.alert('Erro', 'Não foi possível copiar a senha.')
+            toast.show({
+                title: 'Não foi possível copiar a senha.',
+                placement: 'top',
+                bgColor: 'error.400'
+            })
         }
     }
 
